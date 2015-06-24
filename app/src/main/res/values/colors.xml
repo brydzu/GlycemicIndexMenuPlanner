@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary">#FF4285F4</color>
+    <color name="primary_dark">#FF3367D6</color>
+    <color name="accent">#FF4285F4</color>
+    <color name="accent_translucent">#80FFEB3B</color>
+    <color name="accent_bright">#FFF493</color>
+
+    <color name="blue_light">#a0cff4</color>
+
+    <color name="green">#FF9FBF71</color>
+    <color name="green_light">#FFc3ea8b</color>
+    <color name="orange">#f6a505</color>
+    <color name="orange_light">#f6c506</color>
+    <color name="marroon">#FF87260C</color>
+    <color name="marroon_light">#FFd03b13</color>
+</resources>

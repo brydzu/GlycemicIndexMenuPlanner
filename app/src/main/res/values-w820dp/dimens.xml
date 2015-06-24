@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="activity_horizontal_margin">32dp</dimen>
+    <dimen name="gi_item_text_size">16sp</dimen>
+</resources>

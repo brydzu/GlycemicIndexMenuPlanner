@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_list_gi"
+            android:checked="true"
+            android:icon="@drawable/ic_magnify_grey600_36dp"
+            android:title="@string/drawer_list_gi"/>
+
+        <item
+            android:id="@+id/drawer_info"
+            android:icon="@drawable/ic_information_outline_grey600_36dp"
+            android:title="@string/drawer_info"/>
+
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_settings_black_36dp"
+            android:title="@string/drawer_settings"/>
+
+    </group>
+</menu>
