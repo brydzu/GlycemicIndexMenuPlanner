@@ -59,7 +59,7 @@ public class ListGIPresenter {
         List<IGlycemicIndex> datas = new ArrayList<IGlycemicIndex>();
         for (GlycemicIndex glycemicIndex:mGlycemicIndexList.getList()){
             if (glycemicIndex.getTitle().toLowerCase().startsWith(filter.toLowerCase())){
-                datas.add((IGlycemicIndex) glycemicIndex);
+                datas.add(glycemicIndex);
             }
         }
         return datas;

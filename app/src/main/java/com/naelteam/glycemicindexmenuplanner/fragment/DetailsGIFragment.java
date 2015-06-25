@@ -1,44 +1,37 @@
 package com.naelteam.glycemicindexmenuplanner.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
-import com.naelteam.glycemicindexmenuplanner.adapter.ListGIRecyclerAdapter;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
-import com.naelteam.glycemicindexmenuplanner.model.IGlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.presenter.ListGIPresenter;
-import com.naelteam.glycemicindexmenuplanner.view.DividerItemDecoration;
-import com.naelteam.glycemicindexmenuplanner.view.SlideInRightAnimator;
-
-import java.util.List;
+import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.presenter.DetailsGIPresenter;
 
 
-public class DetailsGIFragment extends Fragment implements ListGIPresenter.Listener {
+public class DetailsGIFragment extends BaseFragment implements DetailsGIPresenter.Listener{
 
+    public static final String GLYCEMIC_INDEX = "GLYCEMIC_INDEX";
     private static final String TAG = DetailsGIFragment.class.getSimpleName();
-    private static final String DATA_LIST_KEY = "DATA_LIST_KEY";
-
-    private RecyclerView mRecyclerView;
-    private ListGIPresenter mListGIPresenter;
-    private ListGIRecyclerAdapter mAdapter;
-
     private ProgressDialog mProgressdialog;
+    private DetailsGIPresenter mDetailsGIPresenter;
 
     public DetailsGIFragment() {
+        mDisplayFloatingButton = false;
     }
 
-    public static Fragment newInstance() {
-        return new DetailsGIFragment();
+    public static Fragment newInstance(GlycemicIndex glycemicIndex) {
+        DetailsGIFragment fragment = new DetailsGIFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GLYCEMIC_INDEX, glycemicIndex);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -47,18 +40,17 @@ public class DetailsGIFragment extends Fragment implements ListGIPresenter.Liste
 
         Log.d(TAG, "onCreate - savedInstanceState = " + savedInstanceState);
 
-        mListGIPresenter = new ListGIPresenter(this);
+        mDetailsGIPresenter = new DetailsGIPresenter(this);
 
         if (savedInstanceState !=null){
-            mListGIPresenter.setDataList(savedInstanceState.getParcelable(DATA_LIST_KEY));
+            //mDetailsGIPresenter.setDataList(savedInstanceState.getParcelable(DATA_LIST_KEY));
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_gi, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_details_gi, container, false);
         return view;
     }
 
@@ -66,64 +58,32 @@ public class DetailsGIFragment extends Fragment implements ListGIPresenter.Liste
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mAdapter = new ListGIRecyclerAdapter(getActivity(), mListGIPresenter.getInitialDatas(), new ListGIRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition) {
-                Log.d(TAG, "onLoadGIGroup - glycemicIndexGroup.isExpanded() = " + glycemicIndexGroup.isExpanded());
-                if (glycemicIndexGroup.isExpanded()){
-                    mAdapter.collapseGlycemicGroup(glycemicIndexGroup, layoutPosition);
-                }else {
-                    List<IGlycemicIndex> glycemicIndexes = mListGIPresenter.getData(glycemicIndexGroup.getTitle());
-                    if (glycemicIndexes.size() > 0) {
-                        mAdapter.expandGlycemicGroup(glycemicIndexGroup, glycemicIndexes, layoutPosition);
-                        if (itemView != null) {
-                            Snackbar.make(itemView, "Loading data..", Snackbar.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onClickGIItem(View view, int layoutPosition) {
-                Log.d(TAG, "onClickGIItem - ");
-            }
-        });
-
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        SlideInRightAnimator animator = new SlideInRightAnimator();
-        animator.setItemAnimatorFinishedListener(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
-            @Override
-            public void onAnimationsFinished() {
-                        mAdapter.notifyDataSetChanged();
-            }
-        });
-        mRecyclerView.setItemAnimator(animator);
-        mRecyclerView.setVisibility(View.GONE);
+        setCollapsingToolbarLayoutTitle(getString(R.string.gi_details_title));
+        mActivityInterface.hideNavigationDrawer();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(DATA_LIST_KEY, mListGIPresenter.getDataList());
     }
 
     @Override
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart - ");
+    }
 
-        if (mListGIPresenter.getDataCount() == 0) {
-            mRecyclerView.setVisibility(View.GONE);
-            mProgressdialog = ProgressDialog.show(getActivity(), "", "Loading...", true);
-            mListGIPresenter.listGlycementIndexes();
-        }else {
-            mRecyclerView.setVisibility(View.VISIBLE);
-        }
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop - ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy - ");
     }
 
     @Override
@@ -132,37 +92,40 @@ public class DetailsGIFragment extends Fragment implements ListGIPresenter.Liste
 
         Log.d(TAG, "onResume - ");
 
-        mListGIPresenter.resume();
+        mDetailsGIPresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        mListGIPresenter.pause();
+        mDetailsGIPresenter.pause();
     }
 
-    private void closeProgressDialog(){
-        if (mProgressdialog != null){
-            mProgressdialog.cancel();
+    @Override
+    public void onSearchDetailGISuccess() {
+
+    }
+
+    @Override
+    public void onSearchDetailGIError() {
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(TAG, "onAttach - ");
+
+        try {
+            mActivityInterface = (AppCompatActivityInterface) activity;
+        }catch (ClassCastException e){
+            Log.e(TAG, "onAttach - exception ", e);
         }
     }
 
     @Override
-    public void onSearchGI(List<IGlycemicIndex> glycemicIndexes) {
-        int firstPosition = mAdapter.selectItems(glycemicIndexes);
-        mRecyclerView.smoothScrollToPosition(firstPosition);
-    }
-
-    @Override
-    public void onListGISuccess() {
-        closeProgressDialog();
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onListGIError() {
-        closeProgressDialog();
-        Toast.makeText(getActivity(), "Unable to get datas, please try again", Toast.LENGTH_SHORT);
+    protected String getLogTag() {
+        return TAG;
     }
 }

@@ -10,10 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.naelteam.glycemicindexmenuplanner.fragment.DetailsGIFragment;
 import com.naelteam.glycemicindexmenuplanner.fragment.ListGIFragment;
+import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 
 
 public class MainActivity extends AppCompatActivity implements AppCompatActivityInterface{
@@ -50,8 +51,21 @@ public class MainActivity extends AppCompatActivity implements AppCompatActivity
         super.onResume();
 
         Log.d(TAG, "onResume - ");
+    }
 
+    @Override
+    public void onInitDrawerLayout() {
         initDrawerLayout();
+    }
+
+    @Override
+    public void showNavigationDrawer() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
+    public void hideNavigationDrawer() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     @Override
@@ -67,6 +81,14 @@ public class MainActivity extends AppCompatActivity implements AppCompatActivity
             fragmentTransaction.add(R.id.main_content, ListGIFragment.newInstance());
             fragmentTransaction.commit();
         }
+    }
+
+    @Override
+    public void onDisplayGlycemicIndexDetails(GlycemicIndex glycemicIndex) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_content, DetailsGIFragment.newInstance(glycemicIndex));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -91,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements AppCompatActivity
         mDrawerToggle.syncState();
     }
 
-    @Override
+ /*   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -111,5 +133,5 @@ public class MainActivity extends AppCompatActivity implements AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

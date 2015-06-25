@@ -2,16 +2,11 @@ package com.naelteam.glycemicindexmenuplanner.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +16,7 @@ import android.widget.Toast;
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
 import com.naelteam.glycemicindexmenuplanner.adapter.ListGIRecyclerAdapter;
-import com.naelteam.glycemicindexmenuplanner.dialog.DialogListener;
-import com.naelteam.glycemicindexmenuplanner.dialog.SearchGIDialog;
-import com.naelteam.glycemicindexmenuplanner.event.UISearchGIEvent;
+import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
 import com.naelteam.glycemicindexmenuplanner.model.IGlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.presenter.ListGIPresenter;
@@ -32,17 +25,12 @@ import com.naelteam.glycemicindexmenuplanner.view.SlideInRightAnimator;
 
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 
-
-public class ListGIFragment extends Fragment implements ListGIPresenter.Listener {
+public class ListGIFragment extends BaseFragment implements ListGIPresenter.Listener {
 
     private static final String TAG = ListGIFragment.class.getSimpleName();
     private static final String DATA_LIST_KEY = "DATA_LIST_KEY";
 
-    private AppCompatActivityInterface mActivityInterface;
-
-    private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private ListGIPresenter mListGIPresenter;
     private ListGIRecyclerAdapter mAdapter;
@@ -77,51 +65,16 @@ public class ListGIFragment extends Fragment implements ListGIPresenter.Listener
         return view;
     }
 
-    private void initFloatingActionBar() {
-        FloatingActionButton floatingActionButton = (FloatingActionButton) getView().findViewById(R.id.fab);
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SearchGIDialog().createAlertDialog(getActivity(), new DialogListener<String>() {
-                    @Override
-                    public void onPositiveClick(DialogInterface dialogInterface, String result) {
-                        Log.d(TAG, "onPositiveClick - result = " + result);
-                        EventBus.getDefault().post(new UISearchGIEvent(result));
-                    }
-                    @Override
-                    public void onNegativeClick(DialogInterface dialogInterface) {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
-            }
-        });
-    }
-
-    private void initToolbar() {
-        mToolbar = (Toolbar) getView().findViewById(R.id.toolbar);
-        mActivityInterface.setToolbar(mToolbar);
-        mActivityInterface.setSupportActionBar(mToolbar);
-        final ActionBar actionBar = mActivityInterface.getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        initFloatingActionBar();
-        initToolbar();
+        Log.d(TAG, "onActivityCreated - ");
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) getView().findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
-
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mActivityInterface.showNavigationDrawer();
 
         mAdapter = new ListGIRecyclerAdapter(getActivity(), mListGIPresenter.getInitialDatas(), new ListGIRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -134,15 +87,16 @@ public class ListGIFragment extends Fragment implements ListGIPresenter.Listener
                     if (glycemicIndexes.size() > 0) {
                         mAdapter.expandGlycemicGroup(glycemicIndexGroup, glycemicIndexes, layoutPosition);
                         if (itemView != null) {
-                            Snackbar.make(itemView, "Loading data..", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(itemView, getString(R.string.loading_data), Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 }
             }
 
             @Override
-            public void onClickGIItem(View view, int layoutPosition) {
+            public void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition) {
                 Log.d(TAG, "onClickGIItem - ");
+                mActivityInterface.onDisplayGlycemicIndexDetails(glycemicIndex);
             }
         });
 
@@ -193,7 +147,15 @@ public class ListGIFragment extends Fragment implements ListGIPresenter.Listener
     public void onPause() {
         super.onPause();
 
+        Log.d(TAG, "onPause - ");
+
         mListGIPresenter.pause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop - ");
     }
 
     private void closeProgressDialog(){
@@ -211,7 +173,7 @@ public class ListGIFragment extends Fragment implements ListGIPresenter.Listener
     @Override
     public void onListGISuccess() {
         closeProgressDialog();
-        Log.d(TAG, "onListGISuccess - render visible");
+        Log.d(TAG, "onListGISuccess");
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -231,6 +193,10 @@ public class ListGIFragment extends Fragment implements ListGIPresenter.Listener
         }catch (ClassCastException e){
             Log.e(TAG, "onAttach - exception ", e);
         }
+    }
 
+    @Override
+    protected String getLogTag() {
+        return TAG;
     }
 }

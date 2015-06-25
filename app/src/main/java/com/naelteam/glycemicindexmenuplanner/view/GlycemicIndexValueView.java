@@ -8,7 +8,6 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 
@@ -56,7 +55,7 @@ public class GlycemicIndexValueView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        Log.d("", "onSizeChanged - w="+w+", h=" + h + ", value=" + mValue);
+        //Log.d("", "onSizeChanged - w="+w+", h=" + h + ", value=" + mValue);
 
         setTextSizeForWidth(mTextPaint, h/2, "50");
 

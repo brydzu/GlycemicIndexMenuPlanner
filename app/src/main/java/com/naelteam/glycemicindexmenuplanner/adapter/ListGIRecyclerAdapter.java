@@ -175,7 +175,7 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
 
     public interface OnItemClickListener {
         void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition);
-        void onClickGIItem(View view, int layoutPosition);
+        void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition);
     }
 
     class MainViewHolder extends RecyclerView.ViewHolder{
@@ -227,8 +227,10 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "onClickGIItem - view CLICKED");
+                    final GlycemicIndex glycemicIndex = (GlycemicIndex) mDatas.get(getLayoutPosition());
+
                     if (mOnItemClickListener != null){
-                        mOnItemClickListener.onClickGIItem(view, getLayoutPosition());
+                        mOnItemClickListener.onClickGIItem(glycemicIndex, getLayoutPosition());
                     }
                 }
             });
