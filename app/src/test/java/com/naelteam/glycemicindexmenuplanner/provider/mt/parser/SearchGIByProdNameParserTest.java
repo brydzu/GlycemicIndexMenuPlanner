@@ -42,7 +42,7 @@ public class SearchGIByProdNameParserTest {
 
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(mActivity.getResources().getAssets().open("mt_search_by_prod_name.html")));
+            reader = new BufferedReader(new InputStreamReader(mActivity.getResources().getAssets().open("mt_search_gi_by_name.html")));
             String data = "";
             String str;
             while ((str = reader.readLine())!= null){

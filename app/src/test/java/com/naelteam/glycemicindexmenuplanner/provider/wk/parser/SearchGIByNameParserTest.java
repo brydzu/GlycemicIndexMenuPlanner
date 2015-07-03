@@ -1,8 +1,9 @@
-package com.naelteam.glycemicindexmenuplanner.provider.mt.parser;
+package com.naelteam.glycemicindexmenuplanner.provider.wk.parser;
 
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.provider.wik.parser.SearchGIByNameParser;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,19 +23,19 @@ import java.util.List;
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21, manifest = "/src/main/AndroidManifest.xml")
-public class SearchListGIParserTest {
+public class SearchGIByNameParserTest {
 
     private MainActivity mActivity;
-    private SearchListGIParser sut;
+    private SearchGIByNameParser sut;
 
-    public SearchListGIParserTest() {
+    public SearchGIByNameParserTest() {
     }
 
     @Before
     public void setup()  {
         mActivity = Robolectric.buildActivity(MainActivity.class)
                 .create().get();
-        sut = new SearchListGIParser();
+        sut = new SearchGIByNameParser();
     }
 
     @Test
@@ -42,7 +43,7 @@ public class SearchListGIParserTest {
 
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(mActivity.getApplicationContext().getResources().getAssets().open("mt_list_gi.html")));
+            reader = new BufferedReader(new InputStreamReader(mActivity.getResources().getAssets().open("wk_search_gi_by_name.html")));
             String data = "";
             String str;
             while ((str = reader.readLine())!= null){
