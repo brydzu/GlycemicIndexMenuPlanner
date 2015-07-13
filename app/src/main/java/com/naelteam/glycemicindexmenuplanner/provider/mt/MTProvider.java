@@ -5,7 +5,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.naelteam.glycemicindexmenuplanner.event.GetListGIEvent;
-import com.naelteam.glycemicindexmenuplanner.event.ReturnListGIEvent;
+import com.naelteam.glycemicindexmenuplanner.event.ReturnListGIReturnEvent;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.network.CustomVolleyRequest;
 import com.naelteam.glycemicindexmenuplanner.network.VolleyUtils;
@@ -60,13 +60,13 @@ public class MTProvider {
             @Override
             public void onSuccess(List<GlycemicIndex> glycemicIndexes) {
                 Log.d(TAG, "listGlycemicIndexes - onSuccess");
-                EventBus.getDefault().post(new ReturnListGIEvent(glycemicIndexes, null));
+                EventBus.getDefault().post(new ReturnListGIReturnEvent(glycemicIndexes, null));
             }
 
             @Override
             public void onError(VolleyError volleyError) {
                 Log.d(TAG, "listGlycemicIndexes - onError");
-                EventBus.getDefault().post(new ReturnListGIEvent(null, VolleyUtils.getError(volleyError)));
+                EventBus.getDefault().post(new ReturnListGIReturnEvent(null, volleyError));
             }
         });
         VolleyWrapper.getInstance().addRequest(request);

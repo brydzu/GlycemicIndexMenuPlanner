@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
@@ -27,6 +28,7 @@ public abstract class BaseFragment extends Fragment{
     protected FloatingActionButton mFloatingActionButton;
 
     protected boolean mDisplayFloatingButton = true;
+    protected ImageView mImageToolbar;
 
     protected abstract String getLogTag();
 
@@ -45,6 +47,7 @@ public abstract class BaseFragment extends Fragment{
 
     private void initCollapsingToolbar(){
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) getView().findViewById(R.id.collapsing_toolbar);
+        mImageToolbar = (ImageView) getView().findViewById(R.id.toolbar_image);
         setCollapsingToolbarLayoutTitle(getResources().getString(R.string.app_name));
     }
 
@@ -54,20 +57,12 @@ public abstract class BaseFragment extends Fragment{
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SearchGIDialog().createAlertDialog(getActivity(), new DialogListener<String>() {
-                    @Override
-                    public void onPositiveClick(DialogInterface dialogInterface, String result) {
-                        Log.d(getLogTag(), "onPositiveClick - result = " + result);
-                        EventBus.getDefault().post(new UISearchGIEvent(result));
-                    }
-                    @Override
-                    public void onNegativeClick(DialogInterface dialogInterface) {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
+                onFloatingActionBarClick(v);
             }
         });
     }
+
+    protected abstract void onFloatingActionBarClick(View view);
 
     protected void setCollapsingToolbarLayoutTitle(String title){
         mCollapsingToolbarLayout.setTitle(title);

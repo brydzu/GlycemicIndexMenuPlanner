@@ -1,9 +1,12 @@
-package com.naelteam.glycemicindexmenuplanner.provider.mt.parser;
+package com.naelteam.glycemicindexmenuplanner.provider.wk.parser;
 
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
 import com.naelteam.glycemicindexmenuplanner.FileUtils;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
+import com.naelteam.glycemicindexmenuplanner.provider.mt.parser.SearchListGIParser;
+import com.naelteam.glycemicindexmenuplanner.provider.wik.parser.WikFetchGIDetailsParser;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,10 +16,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -24,28 +24,28 @@ import java.util.List;
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21, manifest = "/src/main/AndroidManifest.xml")
-public class SearchGIByProdNameParserTest {
+public class WikFetchGIDetailsParserTest {
 
     private MainActivity mActivity;
-    private SearchGIByProdNameParser sut;
+    private WikFetchGIDetailsParser sut;
 
-    public SearchGIByProdNameParserTest() {
+    public WikFetchGIDetailsParserTest() {
     }
 
     @Before
     public void setup()  {
         mActivity = Robolectric.buildActivity(MainActivity.class)
                 .create().get();
-        sut = new SearchGIByProdNameParser();
+        sut = new WikFetchGIDetailsParser();
     }
 
     @Test
     public void testParser(){
 
         try {
-            String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), "mt_search_gi_by_name.html");
-            List<GlycemicIndex> glycemicIndexes = sut.parse(data);
-            Assert.assertTrue(glycemicIndexes !=null);
+            String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), "wk_fetch_gi_details.html");
+            WikProduct wikProduct = sut.parse(data);
+            Assert.assertTrue(wikProduct !=null);
         } catch (IOException e) {
             throw new AssertionError(e);
         }

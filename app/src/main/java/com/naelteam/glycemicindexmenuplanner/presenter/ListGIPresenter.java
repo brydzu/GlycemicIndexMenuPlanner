@@ -4,7 +4,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.naelteam.glycemicindexmenuplanner.event.GetListGIEvent;
-import com.naelteam.glycemicindexmenuplanner.event.ReturnListGIEvent;
+import com.naelteam.glycemicindexmenuplanner.event.ReturnListGIReturnEvent;
 import com.naelteam.glycemicindexmenuplanner.event.UISearchGIEvent;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
@@ -79,7 +79,7 @@ public class ListGIPresenter {
     }
 
     @Subscribe
-    public void onEvent(ReturnListGIEvent event){
+    public void onEvent(ReturnListGIReturnEvent event){
         if (event.getError()!= null){
             Log.d(TAG, "onEvent - Error " + event.getError());
             mListener.onListGIError();

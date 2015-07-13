@@ -3,16 +3,23 @@ package com.naelteam.glycemicindexmenuplanner.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
 import com.naelteam.glycemicindexmenuplanner.presenter.DetailsGIPresenter;
+import com.squareup.picasso.Picasso;
 
 
 public class DetailsGIFragment extends BaseFragment implements DetailsGIPresenter.Listener{
@@ -21,6 +28,9 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     private static final String TAG = DetailsGIFragment.class.getSimpleName();
     private ProgressDialog mProgressdialog;
     private DetailsGIPresenter mDetailsGIPresenter;
+    private GlycemicIndex mGlycemicIndex;
+
+    private TextView mDescriptionView;
 
     public DetailsGIFragment() {
         mDisplayFloatingButton = false;
@@ -45,6 +55,14 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
         if (savedInstanceState !=null){
             //mDetailsGIPresenter.setDataList(savedInstanceState.getParcelable(DATA_LIST_KEY));
         }
+
+        Bundle arguments = getArguments();
+        if (arguments!=null){
+            GlycemicIndex glycemicIndex = arguments.getParcelable(GLYCEMIC_INDEX);
+            if (glycemicIndex != null){
+                mGlycemicIndex = glycemicIndex;
+            }
+        }
     }
 
     @Override
@@ -57,6 +75,8 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mDescriptionView = (TextView) getView().findViewById(R.id.details_gi_description);
 
         setCollapsingToolbarLayoutTitle(getString(R.string.gi_details_title));
         mActivityInterface.hideNavigationDrawer();
@@ -72,6 +92,9 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart - ");
+
+        mProgressdialog = ProgressDialog.show(getActivity(), "", "Loading...", true);
+        mDetailsGIPresenter.searchDetailsOnGlycemicIndex(mGlycemicIndex.getTitle());
     }
 
     @Override
@@ -103,13 +126,47 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     }
 
     @Override
-    public void onSearchDetailGISuccess() {
+    protected void onFloatingActionBarClick(View view) {
 
     }
 
     @Override
-    public void onSearchDetailGIError() {
+    public void onSearchDetailGISuccess(final WikProduct wikProduct) {
+        closeProgressDialog();
 
+        Log.d(TAG, "onSearchDetailGISuccess - wikProduct = " + wikProduct);
+
+        if (wikProduct != null){
+            Handler handler = new Handler(Looper.getMainLooper()){
+                @Override
+                public void handleMessage(Message msg) {
+                    Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
+
+                    mImageToolbar.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity()).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
+
+                    Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
+
+                    mDescriptionView.setText(wikProduct.getDescription());
+                }
+            };
+
+            Message message = Message.obtain(handler);
+            message.sendToTarget();
+
+        }
+    }
+
+    private void closeProgressDialog() {
+        if (mProgressdialog!=null){
+            mProgressdialog.dismiss();
+            mProgressdialog=null;
+        }
+    }
+
+    @Override
+    public void onSearchDetailGIError() {
+        closeProgressDialog();
     }
 
     @Override

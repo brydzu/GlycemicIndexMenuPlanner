@@ -1,6 +1,7 @@
 package com.naelteam.glycemicindexmenuplanner.provider.mt.parser;
 
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
+import com.naelteam.glycemicindexmenuplanner.FileUtils;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 
@@ -40,26 +41,12 @@ public class SearchListGIParserTest {
     @Test
     public void testParser(){
 
-        BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(mActivity.getApplicationContext().getResources().getAssets().open("mt_list_gi.html")));
-            String data = "";
-            String str;
-            while ((str = reader.readLine())!= null){
-                data += str;
-            }
+            String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), "mt_list_gi.html");
             List<GlycemicIndex> glycemicIndexes = sut.parse(data);
             Assert.assertTrue(glycemicIndexes !=null);
         } catch (IOException e) {
             throw new AssertionError(e);
-        }finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
     }

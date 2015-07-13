@@ -2,6 +2,7 @@ package com.naelteam.glycemicindexmenuplanner.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,9 @@ import android.widget.Toast;
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
 import com.naelteam.glycemicindexmenuplanner.adapter.ListGIRecyclerAdapter;
+import com.naelteam.glycemicindexmenuplanner.dialog.DialogListener;
+import com.naelteam.glycemicindexmenuplanner.dialog.SearchGIDialog;
+import com.naelteam.glycemicindexmenuplanner.event.UISearchGIEvent;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
 import com.naelteam.glycemicindexmenuplanner.model.IGlycemicIndex;
@@ -24,6 +28,8 @@ import com.naelteam.glycemicindexmenuplanner.view.DividerItemDecoration;
 import com.naelteam.glycemicindexmenuplanner.view.SlideInRightAnimator;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 
 public class ListGIFragment extends BaseFragment implements ListGIPresenter.Listener {
@@ -111,6 +117,21 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
         });
         mRecyclerView.setItemAnimator(animator);
         mRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onFloatingActionBarClick(View view) {
+        new SearchGIDialog().createAlertDialog(getActivity(), new DialogListener<String>() {
+            @Override
+            public void onPositiveClick(DialogInterface dialogInterface, String result) {
+                Log.d(getLogTag(), "onPositiveClick - result = " + result);
+                EventBus.getDefault().post(new UISearchGIEvent(result));
+            }
+            @Override
+            public void onNegativeClick(DialogInterface dialogInterface) {
+                dialogInterface.dismiss();
+            }
+        }).show();
     }
 
     @Override
