@@ -49,9 +49,13 @@ public class WikFetchGIDetailsParser {
             if (sectionElements!=null){
                 Section section = new Section();
                 for (Element sectionElement:sectionElements){
+
+                    if (sectionElement.childNodeSize() > 1){
+                        Elements titleElements = sectionElement.getElementsByClass("mw-headline");
+                        section.setTitle(titleElements.first().text());
+
+                    }
                     // look for title
-                    Elements titleElements = sectionElement.getElementsByClass("mw-headline");
-                    section.setTitle(titleElements.first().text());
 
                     /*do {
                         if (sectionElement.tagName().equals("h3")){
