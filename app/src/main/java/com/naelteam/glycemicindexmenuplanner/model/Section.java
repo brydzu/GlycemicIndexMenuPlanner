@@ -1,12 +1,15 @@
 package com.naelteam.glycemicindexmenuplanner.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by fab on 12/07/15.
  */
 public class Section {
 
     private String title;
-    private String subTitle;
+    private List<Section> sections;
     private String description;
     private String[] imagesUrl;
 
@@ -18,12 +21,15 @@ public class Section {
         this.title = title;
     }
 
-    public String getSubTitle() {
-        return subTitle;
+    public List<Section> getSections() {
+        return sections;
     }
 
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
+    public void addSection(Section section) {
+        if (sections == null) {
+            sections = new ArrayList<Section>();
+        }
+        this.sections.add(section);
     }
 
     public String getDescription() {
