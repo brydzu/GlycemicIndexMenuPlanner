@@ -1,5 +1,6 @@
 package com.naelteam.glycemicindexmenuplanner.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 public class WikProduct {
     private String thumbnailUrl;
     private String description;
-    private List<Section> sections;
+    private List<WikSection> wikSections;
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
@@ -26,7 +27,14 @@ public class WikProduct {
         return description;
     }
 
-    public List<Section> getSections(){
-        return sections;
+    public List<WikSection> getWikSections(){
+        return wikSections;
+    }
+
+    public void addSection(WikSection wikSection){
+        if (wikSections == null){
+            wikSections = new ArrayList<WikSection>();
+        }
+        wikSections.add(wikSection);
     }
 }

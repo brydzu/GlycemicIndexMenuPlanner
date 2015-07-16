@@ -7,19 +7,25 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
+import com.naelteam.glycemicindexmenuplanner.adapter.DetailsGIRecyclerAdapter;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
 import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
+import com.naelteam.glycemicindexmenuplanner.model.WikSection;
 import com.naelteam.glycemicindexmenuplanner.presenter.DetailsGIPresenter;
-import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DetailsGIFragment extends BaseFragment implements DetailsGIPresenter.Listener{
@@ -29,7 +35,8 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     private ProgressDialog mProgressdialog;
     private DetailsGIPresenter mDetailsGIPresenter;
     private GlycemicIndex mGlycemicIndex;
-
+    private DetailsGIRecyclerAdapter mDetailsGIRecyclerAdapter;
+    private RecyclerView mRecyclerView;
     private TextView mDescriptionView;
 
     public DetailsGIFragment() {
@@ -80,6 +87,24 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
 
         setCollapsingToolbarLayoutTitle(getString(R.string.gi_details_title));
         mActivityInterface.hideNavigationDrawer();
+
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mActivityInterface.showNavigationDrawer();
+
+        mDetailsGIRecyclerAdapter = new DetailsGIRecyclerAdapter(getActivity(), new DetailsGIRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition) {
+            }
+
+            @Override
+            public void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition) {
+            }
+        });
+
+        mRecyclerView.setAdapter(mDetailsGIRecyclerAdapter);
+        mRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -143,11 +168,26 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
                     Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
 
                     mImageToolbar.setVisibility(View.VISIBLE);
-                    Picasso.with(getActivity()).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
+                    //Picasso.with(getActivity()).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
 
                     Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
 
                     mDescriptionView.setText(wikProduct.getDescription());
+
+                    //flatten section list for the recyclerview
+                    List<WikSection> wikSections = new ArrayList<WikSection>();
+                    for (WikSection section:wikProduct.getWikSections()){
+                        WikSection newSection = new WikSection(section.getTitle());
+                        wikSections.add(newSection);
+                        wikSections.add(section);
+                        for (WikSection subSection:section.getSections()){
+                            WikSection newSubSection = new WikSection(subSection.getTitle());
+                            wikSections.add(newSubSection);
+                            wikSections.add(subSection);
+                        }
+                    }
+                    Log.d(TAG, "handleMessage - flatten wikSections size = " +  wikSections.size());
+                    mDetailsGIRecyclerAdapter.addAll(wikSections, 0, wikSections.size());
                 }
             };
 
