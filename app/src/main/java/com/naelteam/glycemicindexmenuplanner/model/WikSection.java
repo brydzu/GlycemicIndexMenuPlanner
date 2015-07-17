@@ -17,6 +17,10 @@ public class WikSection {
         this.mTitle = title;
     }
 
+    public WikSection() {
+
+    }
+
     public String getTitle() {
         return mTitle;
     }

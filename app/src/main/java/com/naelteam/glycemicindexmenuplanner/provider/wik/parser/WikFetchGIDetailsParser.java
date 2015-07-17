@@ -59,14 +59,14 @@ public class WikFetchGIDetailsParser {
 
                     if (sectionElement.childNodeSize() > 1){
                         Elements titleElements = sectionElement.getElementsByClass(HEADLINE_TAG);
-                        wikSection = new WikSection();
                         String text = titleElements.first().text();
                         if (discardTags(text)){
                             break;
                         }
-                        wikSection.setTitle(text);
+                        wikSection = new WikSection(text);
                     }
                     Element nextElementSibling = sectionElement.nextElementSibling();
+
                     WikSection subWikSection = null;
                     while ((nextElementSibling != null) && (!nextElementSibling.tagName().equals("h2"))){
                         if (nextElementSibling.tagName().equals("h3")){

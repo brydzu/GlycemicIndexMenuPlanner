@@ -37,7 +37,6 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     private GlycemicIndex mGlycemicIndex;
     private DetailsGIRecyclerAdapter mDetailsGIRecyclerAdapter;
     private RecyclerView mRecyclerView;
-    private TextView mDescriptionView;
 
     public DetailsGIFragment() {
         mDisplayFloatingButton = false;
@@ -83,12 +82,10 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mDescriptionView = (TextView) getView().findViewById(R.id.details_gi_description);
-
         setCollapsingToolbarLayoutTitle(getString(R.string.gi_details_title));
         mActivityInterface.hideNavigationDrawer();
 
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.details_gi_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mActivityInterface.showNavigationDrawer();
@@ -172,22 +169,31 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
 
                     Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
 
-                    mDescriptionView.setText(wikProduct.getDescription());
-
                     //flatten section list for the recyclerview
                     List<WikSection> wikSections = new ArrayList<WikSection>();
+
+                    // add description as first row of the list
+                    WikSection wikSection = new WikSection();
+                    wikSection.setDescription(wikProduct.getDescription());
+                    wikSections.add(wikSection);
+
                     for (WikSection section:wikProduct.getWikSections()){
-                        WikSection newSection = new WikSection(section.getTitle());
-                        wikSections.add(newSection);
+                        WikSection newSectionTitle = new WikSection(section.getTitle());
+                        wikSections.add(newSectionTitle);
+                        section.setTitle(null);
                         wikSections.add(section);
-                        for (WikSection subSection:section.getSections()){
-                            WikSection newSubSection = new WikSection(subSection.getTitle());
-                            wikSections.add(newSubSection);
-                            wikSections.add(subSection);
+                        if (section.getSections()!=null) {
+                            for (WikSection subSection : section.getSections()) {
+                                WikSection newSubSectionTitle = new WikSection(subSection.getTitle());
+                                wikSections.add(newSubSectionTitle);
+                                section.setTitle(null);
+                                wikSections.add(subSection);
+                            }
                         }
                     }
                     Log.d(TAG, "handleMessage - flatten wikSections size = " +  wikSections.size());
                     mDetailsGIRecyclerAdapter.addAll(wikSections, 0, wikSections.size());
+                    mRecyclerView.setVisibility(View.VISIBLE);
                 }
             };
 
