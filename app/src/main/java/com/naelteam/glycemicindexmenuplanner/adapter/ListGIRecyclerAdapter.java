@@ -86,6 +86,9 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
                 itemViewHolder.mItemLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
             }
             itemViewHolder.mGlycemicIndexValueView.setValue(glycemicIndex.getValue());
+
+            //Log.d(TAG, "onBindViewHolder, position = " + position + ", view = " + itemViewHolder.mGlycemicIndexValueView + ", glycemicIndex title = " + glycemicIndex.getTitle() + ", value = " + glycemicIndex.getValue());
+
             GlycemicIndexValueRule.setGlycemicIndexValue(mContext, itemViewHolder.mGlycemicIndexValueView, glycemicIndex.getValue());
         }
     }

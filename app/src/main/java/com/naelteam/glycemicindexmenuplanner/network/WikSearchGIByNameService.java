@@ -37,6 +37,7 @@ public class WikSearchGIByNameService {
 
     public WikSearchGIByNameService(String baseUrl){
         final RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(baseUrl)
                 .build();
         mWikService = restAdapter.create(WikService.class);
@@ -49,7 +50,7 @@ public class WikSearchGIByNameService {
         return searchGIByNameObs.flatMap(new Func1<Response, Observable<String>>() {
             @Override
             public Observable<String> call(Response response) {
-                Log.d(TAG, "requestAndParseObs - call");
+                Log.d(TAG, "searchGIByName - requestAndParseObs, url = " + response.getUrl() + ", status = " + response.getStatus());
                 String data = new String(((TypedByteArray) response.getBody()).getBytes());
                 String productUrl = new WikSearchGIByNameParser().parse(data);
                 return Observable.just(productUrl);

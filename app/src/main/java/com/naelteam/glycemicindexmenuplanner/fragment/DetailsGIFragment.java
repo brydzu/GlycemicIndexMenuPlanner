@@ -2,6 +2,7 @@ package com.naelteam.glycemicindexmenuplanner.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,6 +24,8 @@ import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
 import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
 import com.naelteam.glycemicindexmenuplanner.model.WikSection;
 import com.naelteam.glycemicindexmenuplanner.presenter.DetailsGIPresenter;
+import com.naelteam.glycemicindexmenuplanner.view.DividerItemDecoration;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,6 +161,7 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
 
         Log.d(TAG, "onSearchDetailGISuccess - wikProduct = " + wikProduct);
 
+        final Context context = getActivity();
         if (wikProduct != null){
             Handler handler = new Handler(Looper.getMainLooper()){
                 @Override
@@ -165,7 +169,7 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
                     Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
 
                     mImageToolbar.setVisibility(View.VISIBLE);
-                    //Picasso.with(getActivity()).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
+                    Picasso.with(context).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
 
                     Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
 
@@ -180,15 +184,19 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
                     for (WikSection section:wikProduct.getWikSections()){
                         WikSection newSectionTitle = new WikSection(section.getTitle());
                         wikSections.add(newSectionTitle);
-                        section.setTitle(null);
-                        wikSections.add(section);
+                        if (section.getDescription()!=null && (!section.getDescription().isEmpty())) {
+                            section.setTitle(null);
+                            wikSections.add(section);
+                        }
                         if (section.getSections()!=null) {
                             for (WikSection subSection : section.getSections()) {
                                 WikSection newSubSectionTitle = new WikSection(subSection.getTitle());
+                                newSubSectionTitle.setSubTitle(true);
                                 wikSections.add(newSubSectionTitle);
-                                section.setTitle(null);
+                                subSection.setTitle(null);
                                 wikSections.add(subSection);
                             }
+                            section.clearSections();
                         }
                     }
                     Log.d(TAG, "handleMessage - flatten wikSections size = " +  wikSections.size());

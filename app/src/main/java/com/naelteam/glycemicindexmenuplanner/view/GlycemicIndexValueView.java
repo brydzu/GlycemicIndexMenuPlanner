@@ -8,6 +8,7 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -75,6 +76,8 @@ public class GlycemicIndexValueView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        //Log.d("GlycemicIndexValueView", "onDraw, this = " + this + ", mValue=" + mValue + ", circlePaint = " + mCirclePaint.getColor());
 
         canvas.drawCircle(mCenterX, mCenterY, mRadius, mCirclePaint);
         if (mValue!=null && (!mValue.isEmpty())){

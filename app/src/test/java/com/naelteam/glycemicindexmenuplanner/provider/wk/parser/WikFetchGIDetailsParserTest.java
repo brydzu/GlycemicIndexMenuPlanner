@@ -43,7 +43,7 @@ public class WikFetchGIDetailsParserTest {
     public void testParser(){
 
         try {
-            String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), "wk_fetch_gi_details.html");
+            String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), "wk_fetch_alcohol_gi_details.html");
             WikProduct wikProduct = sut.parse(data);
             Assert.assertTrue(wikProduct !=null);
         } catch (IOException e) {

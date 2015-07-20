@@ -58,7 +58,12 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
 
         final WikSection section = mDatas.get(position);
         if (viewHolder instanceof SectionTitleViewHolder) {
-            ((SectionTitleViewHolder) viewHolder).mTitleTextView.setText(section.getTitle());
+            TextView textView = ((SectionTitleViewHolder) viewHolder).mTitleTextView;
+            textView.setText(section.getTitle());
+            if (section.isSubTitle()){
+                textView.setTextSize(18);
+                ((SectionTitleViewHolder) viewHolder).mDivider.setVisibility(View.GONE);
+            }
         }else {
             ((SectionContentViewHolder) viewHolder).mDescriptionTextView.setText(section.getDescription());
         }
@@ -115,11 +120,14 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
     class SectionTitleViewHolder extends MainViewHolder{
 
         public TextView mTitleTextView;
+        public View mDivider;
 
         public SectionTitleViewHolder(final View itemView) {
             super(itemView);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.details_gi_section_text);
+            mDivider = itemView.findViewById(R.id.details_gi_section_divider);
+
 
             /*itemView.setOnClickListener(new View.OnClickListener(){
                 @Override

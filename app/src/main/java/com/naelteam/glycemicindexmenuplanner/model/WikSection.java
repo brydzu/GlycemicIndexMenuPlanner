@@ -12,6 +12,7 @@ public class WikSection {
     private List<WikSection> mSections;
     private String mDescription;
     private String[] mImagesUrl;
+    private boolean subTitle;
 
     public WikSection(String title){
         this.mTitle = title;
@@ -56,6 +57,14 @@ public class WikSection {
         this.mImagesUrl = imagesUrl;
     }
 
+    public boolean isSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(boolean subTitle) {
+        this.subTitle = subTitle;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -85,5 +94,12 @@ public class WikSection {
         } else if (!mDescription.equals(other.getDescription()))
             return false;
         return true;
+    }
+
+    public void clearSections() {
+        if (mSections!=null){
+            mSections.clear();
+        }
+        mSections = null;
     }
 }

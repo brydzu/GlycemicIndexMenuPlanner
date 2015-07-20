@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ public class WikFetchGIDetailsParser {
 
     private static final String THUMBNAIL_TAG = "infobox";
     private static final String HEADLINE_TAG = "mw-headline";
-    private static final String EDIT_TAG = "[edit]";
+    private static final String EDIT_TAG = "Edit";
     private static final String GALLERY_TAG = "gallery";
 
     private static final String TAG = WikFetchGIDetailsParser.class.getSimpleName();
@@ -45,7 +46,7 @@ public class WikFetchGIDetailsParser {
             if (siblingElements != null) {
                 StringBuilder builder = new StringBuilder();
                 for (Element siblingElement : siblingElements) {
-                    final String text = siblingElement.text().replace("[edit]", "");
+                    final String text = siblingElement.text().replace(EDIT_TAG, "");
                     Log.d(TAG, "siblingElement text = " + text);
                     builder.append(text + "\r\n");
                 }
@@ -68,43 +69,49 @@ public class WikFetchGIDetailsParser {
                     Element nextElementSibling = sectionElement.nextElementSibling();
 
                     WikSection subWikSection = null;
-                    while ((nextElementSibling != null) && (!nextElementSibling.tagName().equals("h2"))){
-                        if (nextElementSibling.tagName().equals("h3")){
-                            subWikSection = new WikSection();
-                            subWikSection.setTitle(nextElementSibling.text().replace(EDIT_TAG, ""));
-                            wikSection.addSection(subWikSection);
-                        }else if (nextElementSibling.tagName().equals("p")){
-                            String text = nextElementSibling.text();
-                            if (subWikSection != null){
-                                String description = subWikSection.getDescription();
-                                if (description!= null && (!description.isEmpty())){
-                                    subWikSection.setDescription(description + "\r\n" + text);
-                                }else  {
-                                    subWikSection.setDescription(text);
-                                }
-                            }else {
-                                String description = wikSection.getDescription();
-                                if (description !=null && (!description.isEmpty())){
-                                    wikSection.setDescription(description + "\r\n" + text);
-                                }else  {
-                                    wikSection.setDescription(text);
-                                }
-                            }
-                        }else {
-                            Set<String> classNames = nextElementSibling.classNames();
-                            if (classNames.contains(GALLERY_TAG)) {
-                                Elements imgSubElements = nextElementSibling.getElementsByTag("img");
-                                String[] imgSubUrls = new String[imgSubElements.size()];
-                                int count = -1;
-                                for (Element imgSubEl : imgSubElements) {
-                                    String imgSubUrl = imgSubEl.attr("src");
-                                    Log.d(TAG, "imgSubUrl = " + imgSubUrl);
-                                    imgSubUrls[++count] = "https:" + imgSubUrl;
-                                }
+                    while ((nextElementSibling != null) && (!nextElementSibling.tagName().equals("h2"))) {
+
+                        Elements childNodes = nextElementSibling.children();
+
+                        for (Element childNode:childNodes){
+
+                            if (childNode.tagName().equals("h3")) {
+                                subWikSection = new WikSection();
+                                subWikSection.setTitle(childNode.text().replace(EDIT_TAG, ""));
+                                wikSection.addSection(subWikSection);
+                            } else if (childNode.tagName().equals("p")) {
+                                String text = childNode.text();
                                 if (subWikSection != null) {
-                                    subWikSection.setImagesUrl(imgSubUrls);
+                                    String description = subWikSection.getDescription();
+                                    if (description != null && (!description.isEmpty())) {
+                                        subWikSection.setDescription(description + "\r\n" + text);
+                                    } else {
+                                        subWikSection.setDescription(text);
+                                    }
                                 } else {
-                                    wikSection.setImagesUrl(imgSubUrls);
+                                    String description = wikSection.getDescription();
+                                    if (description != null && (!description.isEmpty())) {
+                                        wikSection.setDescription(description + "\r\n" + text);
+                                    } else {
+                                        wikSection.setDescription(text);
+                                    }
+                                }
+                            } else {
+                                Set<String> classNames = childNode.classNames();
+                                if (classNames.contains(GALLERY_TAG)) {
+                                    Elements imgSubElements = childNode.getElementsByTag("img");
+                                    String[] imgSubUrls = new String[imgSubElements.size()];
+                                    int count = -1;
+                                    for (Element imgSubEl : imgSubElements) {
+                                        String imgSubUrl = imgSubEl.attr("src");
+                                        Log.d(TAG, "imgSubUrl = " + imgSubUrl);
+                                        imgSubUrls[++count] = "https:" + imgSubUrl;
+                                    }
+                                    if (subWikSection != null) {
+                                        subWikSection.setImagesUrl(imgSubUrls);
+                                    } else {
+                                        wikSection.setImagesUrl(imgSubUrls);
+                                    }
                                 }
                             }
                         }
