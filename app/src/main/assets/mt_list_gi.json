@@ -1,0 +1,269 @@
+{
+  "glycemicIndexes":[
+    {
+      "title": "Acerola, West Indian cherry",
+      "value": "20"
+    },
+    {
+      "title": "Adzuki/azuki bean",
+      "value": "35"
+    },{
+      "title": "Agave (syrup)",
+      "value": "15"
+    },{
+      "title": "Alcohol",
+      "value": "0"
+    },{
+      "title": "All Bran™",
+      "value": "50"
+    },{
+      "title": "Almond milk",
+      "value": "30"
+    },{
+      "title": "Almond paste/puree (whole, unsweetened)",
+      "value": "25"
+    },{
+      "title": "Almonds",
+      "value": "15"
+    },{
+      "title": "Amaranth, puffed",
+      "value": "70"
+    },{
+      "title": "Amaranth, seeds",
+      "value": "35"
+    },{
+      "title": "Apple (fresh fruit)",
+      "value": "35"
+    },{
+      "title": "Apple juice (unsweetened)",
+      "value": "40"
+    },{
+      "title": "Apple sauce/puree (unsweetened)",
+      "value": "35"
+    },{
+      "title": "Apples, dried",
+      "value": "30"
+    },{
+      "title": "Apricots ( tin/can with syrup)",
+      "value": "65"
+    },{
+      "title": "Apricots (dried)",
+      "value": "30"
+    },{
+      "title": "Apricots (fresh fruit)*",
+      "value": "35"
+    },{
+      "title": "Arrow-root",
+      "value": "85"
+    },{
+      "title": "Artichoke",
+      "value": "20"
+    },{
+      "title": "Asparagus",
+      "value": "15"
+    },{
+      "title": "Avocado",
+      "value": "10"
+    },{
+      "title": "Bagels",
+      "value": "70"
+    },{
+      "title": "Baguette white bread",
+      "value": "70"
+    },{
+      "title": "Bamboo shoot",
+      "value": "20"
+    },{
+      "title": "Bananas (ripe)",
+      "value": "55"
+    },{
+      "title": "Bananas (unripe)",
+      "value": "35"
+    },{
+      "title": "Barley, hulled",
+      "value": "25"
+    },{
+      "title": "Barley, pearl",
+      "value": "30"
+    },{
+      "title": "Beans (white, haricot beans, cannellini beans, faziola beans)",
+      "value": "30"
+    },{
+      "title": "Beans, fava, broad beans, horse beans (raw)",
+      "value": "40"
+    },{
+      "title": "Beans, flageolet, fayot beans",
+      "value": "25"
+    },{
+      "title": "Beans, Italian flat beans, runner",
+      "value": "15"
+    },{
+      "title": "Beans, string green beans",
+      "value": "30"
+    },{
+      "title": "Beef*** (steak, etc.)",
+      "value": "0"
+    },{
+      "title": "Beer*",
+      "value": "70"
+    },{
+      "title": "Beet (raw)<",
+      "value": "30"
+    },{
+      "title": "Beet, beetroot (cooked)*",
+      "value": "65"
+    },{
+      "title": "Biscuit",
+      "value": "70"
+    },{
+      "title": "Biscuit (whole flour, no sugar added)",
+      "value": "50"
+    },{
+      "title": "Black beans",
+      "value": "35"
+    },{
+      "title": "Black currant",
+      "value": "15"
+    },{
+      "title": "Blackberry, mulberry",
+      "value": "25"
+    },{
+      "title": "Blueberry, whortleberry, bilberry",
+      "value": "25"
+    },{
+      "title": "Bran (oat, wheat...)",
+      "value": "15"
+    },{
+      "title": "Bread (Montignac integral bread)",
+      "value": "34"
+    },{
+      "title": "Bread with quinoa (approximately 65% of quinoa)",
+      "value": "50"
+    },{
+      "title": "Bread, 100% integral flour with pure leaven",
+      "value": "40"
+    },{
+      "title": "Bread, Essene/ezekiel bread (sprouted cereals bread)",
+      "value": "35"
+    },{
+      "title": "Bread, gluten-free white",
+      "value": "90"
+    },{
+      "title": "Bread, matzo bread (integral flour)",
+      "value": "40"
+    },{
+      "title": "Bread, toasted integral bread",
+      "value": "45"
+    },{
+      "title": "Bread, white sandwich",
+      "value": "75"
+    },{
+      "title": "Bread, whole-grain",
+      "value": "65"
+    },{
+      "title": "Brioche",
+      "value": "70"
+    },{
+      "title": "Broccoli",
+      "value": "15"
+    },{
+      "title": "Brussels sprouts",
+      "value": "15"
+    },{
+      "title": "Buckwheat pancakes",
+      "value": "40"
+    },{
+      "title": "Buckwheat pasta",
+      "value": "40"
+    },{
+      "title": "Buckwheat, kasha, saracen (integral; flour or bread)",
+      "value": "50"
+    },{
+      "title": "Bulgur wheat (cooked)",
+      "value": "50"
+    },{
+      "title": "Bulgur wheat (whole, cooked)",
+      "value": "45"
+    },{
+      "title": "Butter cookies, shortbread, spritz biscuit (flour, butter, sugar)",
+      "value": "55"
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    },{
+      "title": "",
+      "value": ""
+    }
+
+
+  ]
+
+
+
+}

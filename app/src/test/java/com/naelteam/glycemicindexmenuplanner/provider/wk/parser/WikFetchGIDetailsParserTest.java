@@ -39,18 +39,26 @@ public class WikFetchGIDetailsParserTest {
         sut = new WikFetchGIDetailsParser();
     }
 
-    @Test
-    public void testParser(){
-
+    private WikProduct parseHtml(String htmlPage){
         try {
-            String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), "wk_fetch_alcohol_gi_details.html");
-            WikProduct wikProduct = sut.parse(data);
-            Assert.assertTrue(wikProduct !=null);
+            String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), htmlPage);
+            return sut.parse(data);
         } catch (IOException e) {
             throw new AssertionError(e);
         }
-
     }
 
+    @Test
+    public void testValidAlmondParser(){
+        WikProduct wikProduct = parseHtml("wk_fetch_almond_gi_details.html");
+        Assert.assertTrue(wikProduct !=null);
+    }
+
+
+    @Test
+    public void testValidAlcoholParser(){
+        WikProduct wikProduct = parseHtml("wk_fetch_alcohol_gi_details.html");
+        Assert.assertTrue(wikProduct !=null);
+    }
 
 }

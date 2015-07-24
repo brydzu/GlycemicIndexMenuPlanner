@@ -20,6 +20,9 @@ public class WikFetchGIDetailsParser {
 
     private static final String THUMBNAIL_TAG = "infobox";
     private static final String HEADLINE_TAG = "mw-headline";
+    private static final String DEFAULT_CONTENT_TAG = "mw-content-text";
+    private static final String CONTENT_TAG = "content";
+
     private static final String EDIT_TAG = "Edit";
     private static final String GALLERY_TAG = "gallery";
 
@@ -32,28 +35,39 @@ public class WikFetchGIDetailsParser {
         Log.d(TAG, "Connected to data");
         WikProduct wikProduct = new WikProduct();
 
-        Elements thumbElems = doc.getElementsByClass(THUMBNAIL_TAG);
+        Element contentElement = doc.getElementById(DEFAULT_CONTENT_TAG);
 
-        if (thumbElems != null) {
-            Element thumbElement = thumbElems.first();
+        if (contentElement == null){
+            contentElement = doc.getElementById(CONTENT_TAG);
+        }
 
-            Elements imgElements = thumbElement.getElementsByTag("img");
-            String imgUrl = imgElements.first().attr("src");
-            Log.d(TAG, "imgUrl = " + imgUrl);
-            wikProduct.setThumbnailUrl("https:" + imgUrl);
+        if (contentElement != null) {
 
-            Elements siblingElements = thumbElement.parent().siblingElements();
-            if (siblingElements != null) {
+            Elements thumbElems = contentElement.getElementsByClass(THUMBNAIL_TAG);
+
+            if (thumbElems.size() > 0) {
+                Element thumbElement = thumbElems.first();
+                Elements imgElements = thumbElement.getElementsByTag("img");
+                String imgUrl = imgElements.first().attr("src");
+                Log.d(TAG, "imgUrl = " + imgUrl);
+                wikProduct.setThumbnailUrl("https:" + imgUrl);
+            }
+
+            Element firstChildElement = contentElement.child(0);
+            Elements childElements = firstChildElement.children();
+            if (childElements.size() > 0) {
                 StringBuilder builder = new StringBuilder();
-                for (Element siblingElement : siblingElements) {
-                    final String text = siblingElement.text().replace(EDIT_TAG, "");
-                    Log.d(TAG, "siblingElement text = " + text);
-                    builder.append(text + "\r\n");
+                for (Element childElement : childElements) {
+                    if (childElement.tagName().equals("p")) {
+                        final String text = childElement.text().replace(EDIT_TAG, "");
+                        Log.d(TAG, "childElement text = " + text);
+                        builder.append(text + "\r\n");
+                    }
                 }
                 wikProduct.setDescription(builder.toString());
             }
 
-            Elements sectionElements = doc.getElementsByTag("h2");
+            Elements sectionElements = contentElement.getElementsByTag("h2");
             if (sectionElements!=null){
                 WikSection wikSection = null;
                 for (Element sectionElement:sectionElements){
