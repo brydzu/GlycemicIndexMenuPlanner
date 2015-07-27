@@ -213,6 +213,8 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     @Override
     public void onSearchDetailGIError() {
         closeProgressDialog();
+
+
     }
 
     @Override

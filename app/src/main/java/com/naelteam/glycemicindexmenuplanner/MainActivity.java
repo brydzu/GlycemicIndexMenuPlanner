@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.naelteam.glycemicindexmenuplanner.fragment.DetailsGIFragment;
 import com.naelteam.glycemicindexmenuplanner.fragment.ListGIFragment;
@@ -89,6 +90,13 @@ public class MainActivity extends AppCompatActivity implements AppCompatActivity
         fragmentTransaction.replace(R.id.main_content, DetailsGIFragment.newInstance(glycemicIndex));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onSearchDetailGIError() {
+        getSupportFragmentManager().popBackStack();
+
+        Toast.makeText(this, "Error on getting this product", Toast.LENGTH_SHORT).show();
     }
 
     @Override

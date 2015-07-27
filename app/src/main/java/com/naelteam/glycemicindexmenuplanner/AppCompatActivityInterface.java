@@ -22,4 +22,6 @@ public interface AppCompatActivityInterface {
     void hideNavigationDrawer();
 
     void showNavigationDrawer();
+
+    void onSearchDetailGIError();
 }

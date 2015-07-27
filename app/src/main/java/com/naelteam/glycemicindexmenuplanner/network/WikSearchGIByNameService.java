@@ -53,7 +53,7 @@ public class WikSearchGIByNameService {
     public Observable<String> requestAndParseObs(String searchStr){
 
         //filter URL
-        String searchUrl = searchStr.replaceAll("*", "");
+        String searchUrl = searchStr.replaceAll("\**", "");
 
         final Observable<Response> searchGIByNameObs = mWikService.searchGIByName(searchUrl);
 
