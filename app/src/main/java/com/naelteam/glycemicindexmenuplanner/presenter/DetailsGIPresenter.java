@@ -8,6 +8,7 @@ import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by fab on 07/06/15.
@@ -26,8 +27,8 @@ public class DetailsGIPresenter {
         EventBus.getDefault().post(new SearchGIByNameEvent(giName));
     }
 
-    @Subscribe
-    public void onEventMainThread(ReturnSearchGIByNameReturnEvent event){
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onReturnSearchGIByNameReturnEvent(ReturnSearchGIByNameReturnEvent event){
         if (event.getError()!= null){
             Log.d(TAG, "onEvent - ReturnSearchGIByNameReturnEvent, Error " + event.getError());
             mListener.onSearchDetailGIError();

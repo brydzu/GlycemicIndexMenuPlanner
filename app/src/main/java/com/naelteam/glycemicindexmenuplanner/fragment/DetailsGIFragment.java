@@ -163,50 +163,42 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
 
         final Context context = getActivity();
         if (wikProduct != null){
-            Handler handler = new Handler(Looper.getMainLooper()){
-                @Override
-                public void handleMessage(Message msg) {
-                    Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
+            Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
 
-                    mImageToolbar.setVisibility(View.VISIBLE);
-                    Picasso.with(context).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
+            mImageToolbar.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
 
-                    Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
+            Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
 
-                    //flatten section list for the recyclerview
-                    List<WikSection> wikSections = new ArrayList<WikSection>();
+            //flatten section list for the recyclerview
+            List<WikSection> wikSections = new ArrayList<WikSection>();
 
-                    // add description as first row of the list
-                    WikSection wikSection = new WikSection();
-                    wikSection.setDescription(wikProduct.getDescription());
-                    wikSections.add(wikSection);
+            // add description as first row of the list
+            WikSection wikSection = new WikSection();
+            wikSection.setDescription(wikProduct.getDescription());
+            wikSections.add(wikSection);
 
-                    for (WikSection section:wikProduct.getWikSections()){
-                        WikSection newSectionTitle = new WikSection(section.getTitle());
-                        wikSections.add(newSectionTitle);
-                        if (section.getDescription()!=null && (!section.getDescription().isEmpty())) {
-                            section.setTitle(null);
-                            wikSections.add(section);
-                        }
-                        if (section.getSections()!=null) {
-                            for (WikSection subSection : section.getSections()) {
-                                WikSection newSubSectionTitle = new WikSection(subSection.getTitle());
-                                newSubSectionTitle.setSubTitle(true);
-                                wikSections.add(newSubSectionTitle);
-                                subSection.setTitle(null);
-                                wikSections.add(subSection);
-                            }
-                            section.clearSections();
-                        }
-                    }
-                    Log.d(TAG, "handleMessage - flatten wikSections size = " +  wikSections.size());
-                    mDetailsGIRecyclerAdapter.addAll(wikSections, 0, wikSections.size());
-                    mRecyclerView.setVisibility(View.VISIBLE);
+            for (WikSection section:wikProduct.getWikSections()){
+                WikSection newSectionTitle = new WikSection(section.getTitle());
+                wikSections.add(newSectionTitle);
+                if (section.getDescription()!=null && (!section.getDescription().isEmpty())) {
+                    section.setTitle(null);
+                    wikSections.add(section);
                 }
-            };
-
-            Message message = Message.obtain(handler);
-            message.sendToTarget();
+                if (section.getSections()!=null) {
+                    for (WikSection subSection : section.getSections()) {
+                        WikSection newSubSectionTitle = new WikSection(subSection.getTitle());
+                        newSubSectionTitle.setSubTitle(true);
+                        wikSections.add(newSubSectionTitle);
+                        subSection.setTitle(null);
+                        wikSections.add(subSection);
+                    }
+                    section.clearSections();
+                }
+            }
+            Log.d(TAG, "handleMessage - flatten wikSections size = " +  wikSections.size());
+            mDetailsGIRecyclerAdapter.addAll(wikSections, 0, wikSections.size());
+            mRecyclerView.setVisibility(View.VISIBLE);
 
         }
     }
