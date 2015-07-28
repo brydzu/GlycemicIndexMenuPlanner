@@ -24,7 +24,7 @@ public class WikFetchGIDetailsParser {
     private static final String DEFAULT_CONTENT_TAG = "mw-content-text";
     private static final String CONTENT_TAG = "content";
 
-    private static final String EDIT_TAG = "\\[Edit\\]";
+    private static final String EDIT_TAG = "\\[edit\\]";
     private static final String GALLERY_TAG = "gallery";
 
     private static final String TAG = WikFetchGIDetailsParser.class.getSimpleName();
@@ -70,9 +70,10 @@ public class WikFetchGIDetailsParser {
                     if (childElement.tagName().equals("p")) {
                         final String text = childElement.text();
                         Log.d(TAG, "childElement text = " + text);
-                        builder.append(text + "\r\n");
+                        builder.append(text + "\r\n" + "\r\n");
                     }
                 }
+                builder.append("<a href='http://www.google.com'>http://www.google.com</a>");
                 wikProduct.setDescription(builder.toString());
             }
 
@@ -102,14 +103,14 @@ public class WikFetchGIDetailsParser {
                             if (subWikSection != null) {
                                 String description = subWikSection.getDescription();
                                 if (description != null && (!description.isEmpty())) {
-                                    subWikSection.setDescription(description + "\r\n" + text);
+                                    subWikSection.setDescription(description + "\r\n" + "\r\n" + text);
                                 } else {
                                     subWikSection.setDescription(text);
                                 }
                             } else {
                                 String description = wikSection.getDescription();
                                 if (description != null && (!description.isEmpty())) {
-                                    wikSection.setDescription(description + "\r\n" + text);
+                                    wikSection.setDescription(description + "\r\n" + "\r\n" + text);
                                 } else {
                                     wikSection.setDescription(text);
                                 }
