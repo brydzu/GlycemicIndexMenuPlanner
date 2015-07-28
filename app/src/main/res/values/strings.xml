@@ -13,4 +13,5 @@
     <string name="gi_details_title">Glycemic Index details</string>
     <string name="error_search_gi_message">Invalid search text</string>
     <string name="star">*</string>
+    <string name="edit_menu_ingredients">Ingredients</string>
 </resources>
