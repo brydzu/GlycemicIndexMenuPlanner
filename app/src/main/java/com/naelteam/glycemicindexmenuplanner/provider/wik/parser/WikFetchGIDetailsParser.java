@@ -18,12 +18,13 @@ import java.util.Set;
  */
 public class WikFetchGIDetailsParser {
 
+    private static final String FIRST_HEADING_TAG = "firstHeading";
     private static final String THUMBNAIL_TAG = "infobox";
     private static final String HEADLINE_TAG = "mw-headline";
     private static final String DEFAULT_CONTENT_TAG = "mw-content-text";
     private static final String CONTENT_TAG = "content";
 
-    private static final String EDIT_TAG = "Edit";
+    private static final String EDIT_TAG = "\\[Edit\\]";
     private static final String GALLERY_TAG = "gallery";
 
     private static final String TAG = WikFetchGIDetailsParser.class.getSimpleName();
@@ -34,6 +35,12 @@ public class WikFetchGIDetailsParser {
         Document doc  = Jsoup.parse(new String(data));
         Log.d(TAG, "Connected to data");
         WikProduct wikProduct = new WikProduct();
+
+        Elements titleEl = doc.getElementsByClass(FIRST_HEADING_TAG);
+
+        if (titleEl.size() > 0){
+            wikProduct.setTitle(titleEl.first().text());
+        }
 
         Element contentElement = doc.getElementById(DEFAULT_CONTENT_TAG);
 
@@ -61,7 +68,7 @@ public class WikFetchGIDetailsParser {
                         break;
                     }
                     if (childElement.tagName().equals("p")) {
-                        final String text = childElement.text().replace(EDIT_TAG, "");
+                        final String text = childElement.text();
                         Log.d(TAG, "childElement text = " + text);
                         builder.append(text + "\r\n");
                     }
@@ -88,7 +95,7 @@ public class WikFetchGIDetailsParser {
                     while ((nextElementSibling != null) && (!nextElementSibling.tagName().equals("h2"))) {
                         if (nextElementSibling.tagName().equals("h3")) {
                             subWikSection = new WikSection();
-                            subWikSection.setTitle(nextElementSibling.text().replace(EDIT_TAG, ""));
+                            subWikSection.setTitle(filterText(nextElementSibling.text()));
                             wikSection.addSection(subWikSection);
                         } else if (nextElementSibling.tagName().equals("p")) {
                             String text = nextElementSibling.text();
@@ -135,6 +142,10 @@ public class WikFetchGIDetailsParser {
         }
 
         return wikProduct;
+    }
+
+    private String filterText(String text) {
+        return text.replaceAll(EDIT_TAG, "");
     }
 
     private boolean discardTags(String text){

@@ -7,6 +7,7 @@ import java.util.List;
  * Created by fab on 03/07/15.
  */
 public class WikProduct {
+    private String title;
     private String thumbnailUrl;
     private String description;
     private List<WikSection> wikSections;
@@ -25,6 +26,14 @@ public class WikProduct {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public List<WikSection> getWikSections(){

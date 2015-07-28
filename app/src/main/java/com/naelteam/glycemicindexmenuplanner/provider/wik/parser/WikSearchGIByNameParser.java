@@ -22,7 +22,7 @@ public class WikSearchGIByNameParser implements Parser<String> {
     @Override
     public String parse(String data) {
         Document doc  = Jsoup.parse(new String(data));
-        Log.d(TAG, "Connected to [" + data + "]");
+        Log.d(TAG, "parse - Connected to data");
 
         String productUrl=null;
         Elements resultElems = doc.getElementsByClass(EXISTING_RESULT_TAG);
@@ -33,7 +33,7 @@ public class WikSearchGIByNameParser implements Parser<String> {
             if (resultElement != null) {
                 Elements linkElements = resultElement.getElementsByTag("a");
                 productUrl = linkElements.first().attr("href");
-                Log.d(TAG, "productUrl = " + productUrl);
+                Log.d(TAG, "parse - productUrl = " + productUrl);
             }
         }
         return productUrl;

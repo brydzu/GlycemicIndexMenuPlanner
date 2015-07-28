@@ -165,6 +165,8 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
         if (wikProduct != null){
             Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
 
+            setCollapsingToolbarLayoutTitle(wikProduct.getTitle());
+
             mImageToolbar.setVisibility(View.VISIBLE);
             Picasso.with(context).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
 
