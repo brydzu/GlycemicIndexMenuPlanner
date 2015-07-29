@@ -16,49 +16,186 @@
             android:layout_margin="20dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_menu_servings"
-                android:layout_width="match_parent"
-                android:hint="@string/edit_menu_servings"
-                android:layout_height="wrap_content"/>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <ImageView
-                    android:id="@+id/edit_menu_time"
+                    android:id="@+id/edit_menu_servings_image"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:src="@drawable/ic_alarm_grey600_48dp"/>
-
-                <EditText
-                    android:id="@+id/edit_menu_prep_time"
+                    android:src="@drawable/ic_account_multiple_grey600_36dp"/>
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_toRightOf="@+id/edit_menu_time"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/edit_menu_servings_image"
                     android:layout_marginLeft="10dp"
                     android:layout_alignParentRight="true"
-                    android:hint="@string/edit_menu_prep_time"
-                    android:layout_height="wrap_content"/>
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center">
+                    <EditText
+                        android:id="@+id/edit_menu_servings"
+                        android:layout_width="match_parent"
+                        android:hint="@string/edit_menu_servings"
+                        android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/edit_menu_cooking_time"
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/edit_menu_time"
-                    android:layout_below="@+id/edit_menu_prep_time"
-                    android:layout_alignParentRight="true"
-                    android:hint="@string/edit_menu_cooking_time"
-                    android:layout_height="wrap_content"/>
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/edit_menu_ingredients"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:hint="@string/edit_menu_ingredients"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/edit_menu_time_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_alarm_grey600_36dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/edit_menu_time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/edit_menu_time_image"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center">
+                    <EditText
+                        android:id="@+id/edit_menu_prep_time"
+                        android:layout_width="match_parent"
+                        android:hint="@string/edit_menu_prep_time"
+                        android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/edit_menu_time_layout"
+                    android:layout_toRightOf="@+id/edit_menu_time_image"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center">
+                    <EditText
+                        android:id="@+id/edit_menu_cooking_time"
+                        android:layout_width="match_parent"
+                        android:hint="@string/edit_menu_cooking_time"
+                        android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+                <ImageView
+                    android:id="@+id/edit_menu_ingredients_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_basket_fill_grey600_36dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/edit_menu_ingredients_image"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center">
+                    <EditText
+                        android:id="@+id/edit_menu_ingredients"
+                        android:layout_width="match_parent"
+                        android:hint="@string/edit_menu_ingredients"
+                        android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+                <ImageView
+                    android:id="@+id/edit_menu_notes_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_view_headline_grey600_36dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/edit_menu_notes_image"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center">
+                    <EditText
+                        android:id="@+id/edit_menu_notes"
+                        android:layout_width="match_parent"
+                        android:hint="@string/edit_menu_notes"
+                        android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+                <ImageView
+                    android:id="@+id/edit_menu_references_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_server_grey600_36dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/edit_menu_references_image"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center">
+                    <EditText
+                        android:id="@+id/edit_menu_references"
+                        android:layout_width="match_parent"
+                        android:hint="@string/edit_menu_references"
+                        android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+                <ImageView
+                    android:id="@+id/edit_menu_video_link_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_movie_grey600_36dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/edit_menu_video_link_image"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center">
+                <EditText
+                    android:id="@+id/edit_menu_video_link"
+                    android:layout_width="match_parent"
+                    android:hint="@string/edit_menu_video_link"
+                    android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
