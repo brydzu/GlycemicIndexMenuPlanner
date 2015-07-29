@@ -40,11 +40,11 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
         mDisplayFloatingButton = false;
     }
 
-    public static Fragment newInstance(GlycemicIndex glycemicIndex) {
+    public static Fragment newInstance() {
         EditMenuFragment fragment = new EditMenuFragment();
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
         bundle.putParcelable(GLYCEMIC_INDEX, glycemicIndex);
-        fragment.setArguments(bundle);
+        fragment.setArguments(bundle);*/
         return fragment;
     }
 
@@ -83,7 +83,7 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
         setCollapsingToolbarLayoutTitle(getString(R.string.gi_details_title));
         mActivityInterface.hideNavigationDrawer();
 
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.details_gi_recycler_view);
+        /*mRecyclerView = (RecyclerView) getView().findViewById(R.id.details_gi_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mActivityInterface.showNavigationDrawer();
@@ -96,10 +96,7 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
             @Override
             public void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition) {
             }
-        });
-
-        mRecyclerView.setAdapter(mDetailsGIRecyclerAdapter);
-        mRecyclerView.setVisibility(View.GONE);
+        });*/
     }
 
     @Override
@@ -113,8 +110,8 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
         super.onStart();
         Log.d(TAG, "onStart - ");
 
-        mProgressdialog = ProgressDialog.show(getActivity(), "", "Loading...", true);
-        mDetailsGIPresenter.searchDetailsOnGlycemicIndex(mGlycemicIndex.getTitle());
+        /*mProgressdialog = ProgressDialog.show(getActivity(), "", "Loading...", true);
+        mDetailsGIPresenter.searchDetailsOnGlycemicIndex(mGlycemicIndex.getTitle());*/
     }
 
     @Override
@@ -135,14 +132,14 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
 
         Log.d(TAG, "onResume - ");
 
-        mDetailsGIPresenter.resume();
+        //mDetailsGIPresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        mDetailsGIPresenter.pause();
+        //mDetailsGIPresenter.pause();
     }
 
     @Override

@@ -10,16 +10,57 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content "
-            android:layout_height="wrap_content"
-            android:labelFor="@id/edit_menu_ingredients"
-            android:text="@string/edit_menu_ingredients"/>
-
-        <EditText
-            android:id="@+id/edit_menu_ingredients"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edit_menu_servings"
+                android:layout_width="match_parent"
+                android:hint="@string/edit_menu_servings"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/edit_menu_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_alarm_grey600_48dp"/>
+
+                <EditText
+                    android:id="@+id/edit_menu_prep_time"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/edit_menu_time"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:hint="@string/edit_menu_prep_time"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/edit_menu_cooking_time"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/edit_menu_time"
+                    android:layout_below="@+id/edit_menu_prep_time"
+                    android:layout_alignParentRight="true"
+                    android:hint="@string/edit_menu_cooking_time"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/edit_menu_ingredients"
+                android:layout_width="match_parent"
+                android:hint="@string/edit_menu_ingredients"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

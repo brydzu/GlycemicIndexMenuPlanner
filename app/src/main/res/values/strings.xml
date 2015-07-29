@@ -14,4 +14,12 @@
     <string name="error_search_gi_message">Invalid search text</string>
     <string name="star">*</string>
     <string name="edit_menu_ingredients">Ingredients</string>
+    <string name="edit_menu_instructions">Instructions</string>
+    <string name="edit_menu_servings">Servings</string>
+    <string name="edit_menu_prep_time">Preparation time</string>
+    <string name="edit_menu_cooking_time">Cooking time</string>
+    <string name="edit_menu_time">mn</string>
+    <string name="edit_menu_notes">Notes</string>
+    <string name="edit_menu_references">References</string>
+    <string name="edit_menu_video_link">Video link</string>
 </resources>

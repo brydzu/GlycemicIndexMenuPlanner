@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.naelteam.glycemicindexmenuplanner.fragment.DetailsGIFragment;
+import com.naelteam.glycemicindexmenuplanner.fragment.EditMenuFragment;
 import com.naelteam.glycemicindexmenuplanner.fragment.ListGIFragment;
 import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 
@@ -87,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements AppCompatActivity
     @Override
     public void onDisplayGlycemicIndexDetails(GlycemicIndex glycemicIndex) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_content, DetailsGIFragment.newInstance(glycemicIndex));
+        //fragmentTransaction.replace(R.id.main_content, DetailsGIFragment.newInstance(glycemicIndex));
+        fragmentTransaction.replace(R.id.main_content, EditMenuFragment.newInstance());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
