@@ -24,6 +24,8 @@ public class Recipe {
 
     private String videoLink;
 
+   private byte[] picture;
+
     public String getName() {
         return name;
     }
@@ -111,7 +113,7 @@ public class Recipe {
         this.picture = picture;
     }
 
-    private byte[] picture;
+
 
 
 }
