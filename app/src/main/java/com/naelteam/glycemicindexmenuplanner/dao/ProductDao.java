@@ -1,6 +1,7 @@
 package com.naelteam.glycemicindexmenuplanner.dao;
 
 import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Document;
 import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.model.Section;
 import com.naelteam.glycemicindexmenuplanner.provider.CouchDBManager;
@@ -15,12 +16,15 @@ import java.util.Map;
  */
 public class ProductDao {
 
+    private final static String TAG = ProductDao.class.getSimpleName();
+
     public static final String TITLE = "title";
     public static final String VALUE = "value";
     public static final String DESCRIPTION = "description";
     public static final String THUMBNAILURL = "thumbnailurl";
     public static final String IMAGESURL = "imagesurl";
     public static final String SECTIONS = "sections";
+
     private CouchDBManager dbManager = CouchDBManager.getInstance();
 
     public Product fetchProduct(String id){
@@ -34,6 +38,16 @@ public class ProductDao {
         String docId = dbManager.insert(properties, null);
         product.setId(docId);
     }
+
+    public void updateProduct(Product product) throws CouchbaseLiteException {
+        Map<String, Object> properties = storeProperties(product);
+        dbManager.update(product.getId(), properties, null);
+    }
+
+    public boolean deleteProduct(Product product) throws CouchbaseLiteException {
+        return dbManager.delete(product.getId());
+    }
+
 
     private Map<String, Object> storeProperties(Product product){
         Map<String, Object> properties = new HashMap<String, Object>();
@@ -53,7 +67,7 @@ public class ProductDao {
     }
 
     private List<Map<String, Object>> storeSections(List<Section> sections){
-        List<Map<String, Object>> sectionPropertiesList = null;
+        List<Map<String, Object>> sectionPropertiesList = new ArrayList<Map<String, Object>>();
         for (Section section:sections){
             Map<String, Object> subProperties = new HashMap<String, Object>();
             subProperties.put(TITLE, section.getTitle());

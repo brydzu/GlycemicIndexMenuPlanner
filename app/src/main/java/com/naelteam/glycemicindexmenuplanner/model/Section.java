@@ -112,6 +112,7 @@ public class Section {
             int count = 0;
             while (tokenizer.hasMoreTokens()){
                 mImagesUrl[count] = tokenizer.nextToken();
+                count++;
             }
         }
     }
