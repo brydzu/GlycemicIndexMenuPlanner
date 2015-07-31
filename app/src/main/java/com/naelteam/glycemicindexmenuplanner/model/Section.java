@@ -1,25 +1,27 @@
 package com.naelteam.glycemicindexmenuplanner.model;
 
+import android.widget.MultiAutoCompleteTextView;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by fab on 12/07/15.
  */
-public class WikSection {
+public class Section {
 
     private String mTitle;
-    private List<WikSection> mSections;
+    private List<Section> mSections;
     private String mDescription;
     private String[] mImagesUrl;
     private boolean subTitle;
 
-    public WikSection(String title){
+    public Section(String title){
         this.mTitle = title;
     }
 
-    public WikSection() {
-
+    public Section() {
     }
 
     public String getTitle() {
@@ -30,15 +32,15 @@ public class WikSection {
         this.mTitle = title;
     }
 
-    public List<WikSection> getSections() {
+    public List<Section> getSections() {
         return mSections;
     }
 
-    public void addSection(WikSection wikSection) {
+    public void addSection(Section section) {
         if (mSections == null) {
-            mSections = new ArrayList<WikSection>();
+            mSections = new ArrayList<Section>();
         }
-        this.mSections.add(wikSection);
+        this.mSections.add(section);
     }
 
     public String getDescription() {
@@ -82,7 +84,7 @@ public class WikSection {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        WikSection other = (WikSection) obj;
+        Section other = (Section) obj;
         if (mTitle == null) {
             if (other.getTitle() != null)
                 return false;
@@ -101,5 +103,31 @@ public class WikSection {
             mSections.clear();
         }
         mSections = null;
+    }
+
+    public void setImagesUrlStr(String flatImagesUrl) {
+        if (flatImagesUrl != null && flatImagesUrl.length() > 0){
+            StringTokenizer tokenizer = new StringTokenizer(flatImagesUrl, "|");
+            mImagesUrl = new String[tokenizer.countTokens()];
+            int count = 0;
+            while (tokenizer.hasMoreTokens()){
+                mImagesUrl[count] = tokenizer.nextToken();
+            }
+        }
+    }
+
+    public String getImagesUrlStr() {
+        String flatImagesUrl = null;
+        if (mImagesUrl != null && mImagesUrl.length > 0){
+            flatImagesUrl = "";
+            for (String image:mImagesUrl){
+                flatImagesUrl += "|" + image;
+            }
+        }
+        return flatImagesUrl;
+    }
+
+    public void setSections(List<Section> subSections) {
+        this.mSections = subSections;
     }
 }

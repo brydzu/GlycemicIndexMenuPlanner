@@ -16,6 +16,7 @@ import com.couchbase.lite.storage.SQLiteStorageEngineFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,9 @@ public class CouchDBTest extends AndroidTestCase {
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("key", "3");
             data.put("time", 102313131321d);
+            List<String> list = new ArrayList<String>();
+            list.add("2");
+            data.put("list", list);
 
             document.putProperties(data);
 

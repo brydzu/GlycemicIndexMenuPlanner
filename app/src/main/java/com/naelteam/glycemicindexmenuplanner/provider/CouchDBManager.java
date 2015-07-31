@@ -1,14 +1,17 @@
 package com.naelteam.glycemicindexmenuplanner.provider;
 
+import com.couchbase.lite.Attachment;
 import com.couchbase.lite.Context;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Manager;
+import com.couchbase.lite.SavedRevision;
 import com.couchbase.lite.UnsavedRevision;
 import com.couchbase.lite.android.AndroidContext;
 
 import java.io.ByteArrayInputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +34,20 @@ public class CouchDBManager {
         mAndroidContext = new AndroidContext(context);
         manager = new Manager(mAndroidContext, null);
         database = manager.getDatabase("gi_db");
+    }
+
+    public Map<String, Object> getDocument(String docId){
+        Document doc = database.getExistingDocument(docId);
+        return doc.getProperties();
+    }
+
+    public List<Attachment> getDocumentAttachments(String docId){
+        Document doc = database.getExistingDocument(docId);
+        SavedRevision savedRevision = doc.getCurrentRevision();
+        if (savedRevision != null){
+            savedRevision.getAttachments();
+        }
+        return null;
     }
 
     public String insert(Map<String, Object> properties, Map<String, Object> attachments) throws CouchbaseLiteException {

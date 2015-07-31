@@ -3,7 +3,7 @@ package com.naelteam.glycemicindexmenuplanner.provider.mt.parser;
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
 import com.naelteam.glycemicindexmenuplanner.FileUtils;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,10 +13,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -44,8 +41,8 @@ public class SearchGIByProdNameParserTest {
 
         try {
             String data = FileUtils.loadAssetFile(mActivity.getApplicationContext(), "mt_search_gi_by_name.html");
-            List<GlycemicIndex> glycemicIndexes = sut.parse(data);
-            Assert.assertTrue(glycemicIndexes !=null);
+            List<Product> products = sut.parse(data);
+            Assert.assertTrue(products !=null);
         } catch (IOException e) {
             throw new AssertionError(e);
         }

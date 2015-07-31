@@ -2,16 +2,12 @@ package com.naelteam.glycemicindexmenuplanner.provider.wik.parser;
 
 import android.util.Log;
 
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.provider.Parser;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WikSearchGIByNameParser implements Parser<String> {
 

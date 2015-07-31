@@ -2,8 +2,7 @@ package com.naelteam.glycemicindexmenuplanner.network;
 
 import android.util.Log;
 
-import com.naelteam.glycemicindexmenuplanner.R;
-import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.provider.wik.parser.WikFetchGIDetailsParser;
 import com.naelteam.glycemicindexmenuplanner.provider.wik.parser.WikSearchGIByNameParser;
 
@@ -68,7 +67,7 @@ public class WikSearchGIByNameService {
         });
     }
 
-    public Observable<WikProduct> getProductDetails(String searchStr){
+    public Observable<Product> getProductDetails(String searchStr){
         Observable<Response> responseObservable = requestAndParseObs(searchStr).flatMap(new Func1<String, Observable<Response>>() {
             @Override
             public Observable<Response> call(String productUrl) {
@@ -76,13 +75,13 @@ public class WikSearchGIByNameService {
                 return mWikService.fetchGIDetails(productUrl.substring(productUrl.lastIndexOf("/") + 1));
             }
         });
-        return responseObservable.flatMap(new Func1<Response, Observable<WikProduct>>() {
+        return responseObservable.flatMap(new Func1<Response, Observable<Product>>() {
             @Override
-            public Observable<WikProduct> call(Response response) {
+            public Observable<Product> call(Response response) {
                 Log.d(TAG, "getProductDetails - response");
                 String data = new String(((TypedByteArray) response.getBody()).getBytes());
-                WikProduct wikProduct = new WikFetchGIDetailsParser().parse(data);
-                return Observable.just(wikProduct);
+                Product product = new WikFetchGIDetailsParser().parse(data);
+                return Observable.just(product);
             }
         });
     }

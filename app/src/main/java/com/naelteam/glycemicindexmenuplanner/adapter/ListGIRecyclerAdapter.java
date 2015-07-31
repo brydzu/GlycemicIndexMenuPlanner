@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.naelteam.glycemicindexmenuplanner.R;
 import com.naelteam.glycemicindexmenuplanner.business.GlycemicIndexValueRule;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
+import com.naelteam.glycemicindexmenuplanner.model.ProductGroup;
 import com.naelteam.glycemicindexmenuplanner.model.IGlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.view.GlycemicIndexValueView;
 
@@ -66,36 +66,36 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
     public void onBindViewHolder(MainViewHolder viewHolder, int position) {
 
         if (viewHolder instanceof GroupViewHolder) {
-            final GlycemicIndexGroup glycemicIndexGroup = (GlycemicIndexGroup) mDatas.get(position);
+            final ProductGroup productGroup = (ProductGroup) mDatas.get(position);
             final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
-            groupViewHolder.mTextView.setText(glycemicIndexGroup.getTitle());
+            groupViewHolder.mTextView.setText(productGroup.getTitle());
 
-            if (glycemicIndexGroup.isExpanded()){
+            if (productGroup.isExpanded()){
                 groupViewHolder.mImageView.setImageResource(R.drawable.ic_expand_more_black_36dp);
             }else {
                 groupViewHolder.mImageView.setImageResource(R.drawable.ic_chevron_right_black_36dp);
             }
             groupViewHolder.mImageView.setColorFilter(mChevronColor);
         }else {
-            final GlycemicIndex glycemicIndex = (GlycemicIndex) mDatas.get(position);
+            final Product product = (Product) mDatas.get(position);
             final ItemViewHolder itemViewHolder = (ItemViewHolder) viewHolder;
-            itemViewHolder.mTextView.setText(glycemicIndex.getTitle());
-            if (glycemicIndex.isSelected()){
+            itemViewHolder.mTextView.setText(product.getTitle());
+            if (product.isSelected()){
                 itemViewHolder.mItemLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue_light));
             }else {
                 itemViewHolder.mItemLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
             }
-            itemViewHolder.mGlycemicIndexValueView.setValue(glycemicIndex.getValue());
+            itemViewHolder.mGlycemicIndexValueView.setValue(product.getValue());
 
-            //Log.d(TAG, "onBindViewHolder, position = " + position + ", view = " + itemViewHolder.mGlycemicIndexValueView + ", glycemicIndex title = " + glycemicIndex.getTitle() + ", value = " + glycemicIndex.getValue());
+            //Log.d(TAG, "onBindViewHolder, position = " + position + ", view = " + itemViewHolder.mGlycemicIndexValueView + ", product title = " + product.getTitle() + ", value = " + product.getValue());
 
-            GlycemicIndexValueRule.setGlycemicIndexValue(mContext, itemViewHolder.mGlycemicIndexValueView, glycemicIndex.getValue());
+            GlycemicIndexValueRule.setGlycemicIndexValue(mContext, itemViewHolder.mGlycemicIndexValueView, product.getValue());
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mDatas.get(position) instanceof GlycemicIndexGroup){
+        if (mDatas.get(position) instanceof ProductGroup){
             return GROUP_VIEW_TYPE;
         }else {
             return ITEM_VIEW_TYPE;
@@ -130,19 +130,19 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
         }
     }
 
-    public void expandGlycemicGroup(GlycemicIndexGroup glycemicIndexGroup, List<IGlycemicIndex> glycemicIndexes, int position){
+    public void expandGlycemicGroup(ProductGroup productGroup, List<IGlycemicIndex> glycemicIndexes, int position){
         Log.d(TAG, "expandGlycemicGroup - position = " + position);
 
-        glycemicIndexGroup.setExpanded(true);
-        glycemicIndexGroup.setNbItems(glycemicIndexes.size());
+        productGroup.setExpanded(true);
+        productGroup.setNbItems(glycemicIndexes.size());
 
-        addAll(glycemicIndexes, position + 1, glycemicIndexGroup.getNbItems());
+        addAll(glycemicIndexes, position + 1, productGroup.getNbItems());
     }
 
-    public void collapseGlycemicGroup(GlycemicIndexGroup glycemicIndexGroup, int position){
-        removeAll(position + 1, glycemicIndexGroup.getNbItems());
-        glycemicIndexGroup.setExpanded(false);
-        glycemicIndexGroup.setNbItems(0);
+    public void collapseGlycemicGroup(ProductGroup productGroup, int position){
+        removeAll(position + 1, productGroup.getNbItems());
+        productGroup.setExpanded(false);
+        productGroup.setNbItems(0);
     }
 
     /**
@@ -154,21 +154,21 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
         int count = 0;
         int firstSelectedItemPosition = 0;
         Log.d(TAG, "selectItems - glycemicIndexes size = " + glycemicIndexes.size());
-        GlycemicIndexGroup dummyGroup = new GlycemicIndexGroup("");
+        ProductGroup dummyGroup = new ProductGroup("");
         for ( IGlycemicIndex glycemicIndex:glycemicIndexes){
             String title = glycemicIndex.getTitle();
             dummyGroup.setTitle(title.charAt(0) + "");
-            Log.d(TAG, "selectItems - look for glycemicIndexGroup with title = " + dummyGroup.getTitle());
+            Log.d(TAG, "selectItems - look for productGroup with title = " + dummyGroup.getTitle());
             int indexGlycemicGroup = mDatas.indexOf(dummyGroup);
-            GlycemicIndexGroup glycemicIndexGroup = (GlycemicIndexGroup) mDatas.get(indexGlycemicGroup);
-            Log.d(TAG, "selectItems - glycemicIndexGroup.isExpanded() = " + glycemicIndexGroup.isExpanded());
-            if (!glycemicIndexGroup.isExpanded()){
-               mOnItemClickListener.onLoadGIGroup(glycemicIndexGroup, null, indexGlycemicGroup);
+            ProductGroup productGroup = (ProductGroup) mDatas.get(indexGlycemicGroup);
+            Log.d(TAG, "selectItems - productGroup.isExpanded() = " + productGroup.isExpanded());
+            if (!productGroup.isExpanded()){
+               mOnItemClickListener.onLoadGIGroup(productGroup, null, indexGlycemicGroup);
             }
             int glycemicIndexPosition = mDatas.indexOf(glycemicIndex);
             if (count==0) firstSelectedItemPosition = glycemicIndexPosition;
-            GlycemicIndex glycemicIndexFromList = (GlycemicIndex) mDatas.get(glycemicIndexPosition);
-            glycemicIndexFromList.setSelected(true);
+            Product productFromList = (Product) mDatas.get(glycemicIndexPosition);
+            productFromList.setSelected(true);
 
             count++;
         }
@@ -177,8 +177,8 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
     }
 
     public interface OnItemClickListener {
-        void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition);
-        void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition);
+        void onLoadGIGroup(ProductGroup productGroup, View itemView, int layoutPosition);
+        void onClickGIItem(Product product, int layoutPosition);
     }
 
     class MainViewHolder extends RecyclerView.ViewHolder{
@@ -204,9 +204,9 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
                 public void onClick(View view) {
                     Log.d(TAG, "onLoadGIGroup - view CLICKED");
 
-                    final GlycemicIndexGroup glycemicIndexGroup = (GlycemicIndexGroup) mDatas.get(getLayoutPosition());
+                    final ProductGroup productGroup = (ProductGroup) mDatas.get(getLayoutPosition());
                     if (mOnItemClickListener != null){
-                        mOnItemClickListener.onLoadGIGroup(glycemicIndexGroup, itemView, getLayoutPosition());
+                        mOnItemClickListener.onLoadGIGroup(productGroup, itemView, getLayoutPosition());
                     }
                 }
             });
@@ -230,10 +230,10 @@ public class ListGIRecyclerAdapter extends RecyclerView.Adapter<ListGIRecyclerAd
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "onClickGIItem - view CLICKED");
-                    final GlycemicIndex glycemicIndex = (GlycemicIndex) mDatas.get(getLayoutPosition());
+                    final Product product = (Product) mDatas.get(getLayoutPosition());
 
                     if (mOnItemClickListener != null){
-                        mOnItemClickListener.onClickGIItem(glycemicIndex, getLayoutPosition());
+                        mOnItemClickListener.onClickGIItem(product, getLayoutPosition());
                     }
                 }
             });

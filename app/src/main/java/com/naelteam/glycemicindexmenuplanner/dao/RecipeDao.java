@@ -41,7 +41,7 @@ public class RecipeDao {
 
         for (Ingredient ingredient:recipe.getIngredients()){
             Map<String, Object> subProperties = new HashMap<String, Object>();
-            subProperties.put("name", ingredient.getName());
+            subProperties.put("name", ingredient.getProductId());
             subProperties.put("unit", ingredient.getUnit());
             subProperties.put("amount", ingredient.getAmount());
             subProperties.put("otherinfo", ingredient.getOtherInfo());

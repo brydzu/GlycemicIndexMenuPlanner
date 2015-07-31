@@ -2,11 +2,8 @@ package com.naelteam.glycemicindexmenuplanner.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,27 +11,15 @@ import android.view.ViewGroup;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
-import com.naelteam.glycemicindexmenuplanner.adapter.DetailsGIRecyclerAdapter;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
-import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
-import com.naelteam.glycemicindexmenuplanner.model.WikSection;
 import com.naelteam.glycemicindexmenuplanner.presenter.DetailsGIPresenter;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter.Listener{
+public class EditMenuFragment extends BaseFragment{
 
     public static final String GLYCEMIC_INDEX = "GLYCEMIC_INDEX";
     private static final String TAG = EditMenuFragment.class.getSimpleName();
     private ProgressDialog mProgressdialog;
     private DetailsGIPresenter mDetailsGIPresenter;
-    private GlycemicIndex mGlycemicIndex;
-    private DetailsGIRecyclerAdapter mDetailsGIRecyclerAdapter;
-    private RecyclerView mRecyclerView;
 
     public EditMenuFragment() {
         mDisplayFloatingButton = false;
@@ -54,19 +39,19 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
 
         Log.d(TAG, "onCreate - savedInstanceState = " + savedInstanceState);
 
-        mDetailsGIPresenter = new DetailsGIPresenter(this);
+        //mDetailsGIPresenter = new DetailsGIPresenter(this);
 
         if (savedInstanceState !=null){
             //mDetailsGIPresenter.setDataList(savedInstanceState.getParcelable(DATA_LIST_KEY));
         }
 
-        Bundle arguments = getArguments();
+        /*Bundle arguments = getArguments();
         if (arguments!=null){
-            GlycemicIndex glycemicIndex = arguments.getParcelable(GLYCEMIC_INDEX);
-            if (glycemicIndex != null){
-                mGlycemicIndex = glycemicIndex;
+            Product product = arguments.getParcelable(GLYCEMIC_INDEX);
+            if (product != null){
+                mProduct = product;
             }
-        }
+        }*/
     }
 
     @Override
@@ -90,11 +75,11 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
 
         mDetailsGIRecyclerAdapter = new DetailsGIRecyclerAdapter(getActivity(), new DetailsGIRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition) {
+            public void onLoadGIGroup(ProductGroup glycemicIndexGroup, View itemView, int layoutPosition) {
             }
 
             @Override
-            public void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition) {
+            public void onClickGIItem(Product glycemicIndex, int layoutPosition) {
             }
         });*/
     }
@@ -111,7 +96,7 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
         Log.d(TAG, "onStart - ");
 
         /*mProgressdialog = ProgressDialog.show(getActivity(), "", "Loading...", true);
-        mDetailsGIPresenter.searchDetailsOnGlycemicIndex(mGlycemicIndex.getTitle());*/
+        mDetailsGIPresenter.searchDetailsOnGlycemicIndex(mProduct.getTitle());*/
     }
 
     @Override
@@ -147,68 +132,11 @@ public class EditMenuFragment extends BaseFragment implements DetailsGIPresenter
 
     }
 
-    @Override
-    public void onSearchDetailGISuccess(final WikProduct wikProduct) {
-        closeProgressDialog();
-
-        Log.d(TAG, "onSearchDetailGISuccess - wikProduct = " + wikProduct);
-
-        final Context context = getActivity();
-        if (wikProduct != null){
-            Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
-
-            setCollapsingToolbarLayoutTitle(wikProduct.getTitle());
-
-            mImageToolbar.setVisibility(View.VISIBLE);
-            Picasso.with(context).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
-
-            Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
-
-            //flatten section list for the recyclerview
-            List<WikSection> wikSections = new ArrayList<WikSection>();
-
-            // add description as first row of the list
-            WikSection wikSection = new WikSection();
-            wikSection.setDescription(wikProduct.getDescription());
-            wikSections.add(wikSection);
-
-            for (WikSection section:wikProduct.getWikSections()){
-                WikSection newSectionTitle = new WikSection(section.getTitle());
-                wikSections.add(newSectionTitle);
-                if (section.getDescription()!=null && (!section.getDescription().isEmpty())) {
-                    section.setTitle(null);
-                    wikSections.add(section);
-                }
-                if (section.getSections()!=null) {
-                    for (WikSection subSection : section.getSections()) {
-                        WikSection newSubSectionTitle = new WikSection(subSection.getTitle());
-                        newSubSectionTitle.setSubTitle(true);
-                        wikSections.add(newSubSectionTitle);
-                        subSection.setTitle(null);
-                        wikSections.add(subSection);
-                    }
-                    section.clearSections();
-                }
-            }
-            Log.d(TAG, "handleMessage - flatten wikSections size = " +  wikSections.size());
-            mDetailsGIRecyclerAdapter.addAll(wikSections, 0, wikSections.size());
-            mRecyclerView.setVisibility(View.VISIBLE);
-
-        }
-    }
-
     private void closeProgressDialog() {
         if (mProgressdialog!=null){
             mProgressdialog.dismiss();
             mProgressdialog=null;
         }
-    }
-
-    @Override
-    public void onSearchDetailGIError() {
-        closeProgressDialog();
-
-        mActivityInterface.onSearchDetailGIError();
     }
 
     @Override

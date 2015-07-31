@@ -3,7 +3,6 @@ package com.naelteam.glycemicindexmenuplanner.provider.wk.parser;
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
 import com.naelteam.glycemicindexmenuplanner.FileUtils;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.provider.wik.parser.WikSearchGIByNameParser;
 
 import org.junit.Assert;
@@ -14,10 +13,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>

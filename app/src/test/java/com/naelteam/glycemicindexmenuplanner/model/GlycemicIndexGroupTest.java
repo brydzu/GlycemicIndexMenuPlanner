@@ -23,8 +23,8 @@ public class GlycemicIndexGroupTest extends TestCase{
 
     @Test
     public void testEquals(){
-        GlycemicIndexGroup glycemicIndex1 = new GlycemicIndexGroup("title1");
-        GlycemicIndexGroup glycemicIndex2 = new GlycemicIndexGroup("title1");
+        ProductGroup glycemicIndex1 = new ProductGroup("title1");
+        ProductGroup glycemicIndex2 = new ProductGroup("title1");
 
         List<IGlycemicIndex> glycemicIndexList = new ArrayList<IGlycemicIndex>();
         glycemicIndexList.add(glycemicIndex1);
@@ -37,8 +37,8 @@ public class GlycemicIndexGroupTest extends TestCase{
 
     @Test
     public void testNotEquals(){
-        GlycemicIndexGroup glycemicIndex1 = new GlycemicIndexGroup("title1");
-        GlycemicIndexGroup glycemicIndex2 = new GlycemicIndexGroup("title2");
+        ProductGroup glycemicIndex1 = new ProductGroup("title1");
+        ProductGroup glycemicIndex2 = new ProductGroup("title2");
 
         assertTrue(glycemicIndex1.hashCode() != glycemicIndex2.hashCode());
         assertEquals(false, glycemicIndex1.equals(glycemicIndex2));

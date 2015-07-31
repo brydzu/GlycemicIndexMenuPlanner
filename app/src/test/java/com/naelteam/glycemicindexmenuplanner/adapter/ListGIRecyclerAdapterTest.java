@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
+import com.naelteam.glycemicindexmenuplanner.model.ProductGroup;
 
 import junit.framework.TestCase;
 
@@ -31,20 +31,20 @@ public class ListGIRecyclerAdapterTest extends TestCase{
 
     @Test
     public void testGetItemCount(){
-        sut.add(new GlycemicIndex("title1","",""));
-        sut.add(new GlycemicIndex("title2","",""));
+        sut.add(new Product("title1","",""));
+        sut.add(new Product("title2","",""));
         assertEquals(2, sut.getItemCount());
     }
 
 
     @Test
     public void testGetItemViewType(){
-        GlycemicIndexGroup glycemicIndexGroup = new GlycemicIndexGroup("title1");
-        sut.add(glycemicIndexGroup);
-        GlycemicIndex glycemicIndex1 = new GlycemicIndex("title2","","");
-        sut.add(glycemicIndex1);
-        GlycemicIndex glycemicIndex2 = new GlycemicIndex("title3","","");
-        sut.add(glycemicIndex2);
+        ProductGroup productGroup = new ProductGroup("title1");
+        sut.add(productGroup);
+        Product product1 = new Product("title2","","");
+        sut.add(product1);
+        Product product2 = new Product("title3","","");
+        sut.add(product2);
         assertEquals(ListGIRecyclerAdapter.GROUP_VIEW_TYPE, sut.getItemViewType(0));
         assertEquals(ListGIRecyclerAdapter.ITEM_VIEW_TYPE, sut.getItemViewType(1));
         assertEquals(ListGIRecyclerAdapter.ITEM_VIEW_TYPE, sut.getItemViewType(2));

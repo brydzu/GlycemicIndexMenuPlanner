@@ -1,21 +1,22 @@
 package com.naelteam.glycemicindexmenuplanner.event;
 
-import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
+
+import com.naelteam.glycemicindexmenuplanner.model.Product;
 
 /**
  * Created by fab on 09/06/15.
  */
 public class ReturnSearchGIByNameReturnEvent extends BaseReturnEvent {
 
-    private WikProduct mWikProduct;
+    private Product product;
 
-    public ReturnSearchGIByNameReturnEvent(WikProduct wikProduct, Throwable error){
+    public ReturnSearchGIByNameReturnEvent(Product product, Throwable error){
         super(error);
-        mWikProduct = wikProduct;
+        this.product = product;
     }
 
-    public WikProduct getWikProduct() {
-        return mWikProduct;
+    public Product getProduct() {
+        return product;
     }
 
 }

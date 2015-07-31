@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
+import com.naelteam.glycemicindexmenuplanner.model.ProductGroup;
 import com.naelteam.glycemicindexmenuplanner.model.IGlycemicIndex;
 
 import junit.framework.TestCase;
@@ -38,7 +38,7 @@ public class ListGIPresenterTest extends TestCase{
         assertTrue(glycemicIndexes.size()!=0);
 
         final IGlycemicIndex glycemicIndex = glycemicIndexes.get(0);
-        assertTrue(glycemicIndex instanceof GlycemicIndexGroup);
+        assertTrue(glycemicIndex instanceof ProductGroup);
         assertEquals("A", glycemicIndex.getTitle());
 
     }

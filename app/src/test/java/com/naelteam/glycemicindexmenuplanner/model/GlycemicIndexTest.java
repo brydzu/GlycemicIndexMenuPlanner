@@ -20,11 +20,11 @@ import java.util.List;
 @Config(constants = BuildConfig.class, sdk = 21, manifest = "/src/main/AndroidManifest.xml")
 public class GlycemicIndexTest extends TestCase{
 
-    private GlycemicIndex sut;
+    private Product sut;
 
     @Before
     public void setup()  {
-        sut = new GlycemicIndex("title1","","");
+        sut = new Product("title1","","");
     }
 
     @Test
@@ -32,31 +32,31 @@ public class GlycemicIndexTest extends TestCase{
         Parcel parcel = Parcel.obtain();
         sut.writeToParcel(parcel, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
         parcel.setDataPosition(0);
-        GlycemicIndex glycemicIndex2= GlycemicIndex.CREATOR.createFromParcel(parcel);
-        System.out.println("value=" +glycemicIndex2.getTitle());
-        assertEquals("title1", glycemicIndex2.getTitle());
+        Product product2 = Product.CREATOR.createFromParcel(parcel);
+        System.out.println("value=" + product2.getTitle());
+        assertEquals("title1", product2.getTitle());
     }
 
     @Test
     public void testEquals(){
-        GlycemicIndex glycemicIndex1 = new GlycemicIndex("title1", "","");
-        GlycemicIndex glycemicIndex2 = new GlycemicIndex("title1","","");
+        Product product1 = new Product("title1", "","");
+        Product product2 = new Product("title1","","");
 
-        List<GlycemicIndex> glycemicIndexList = new ArrayList<GlycemicIndex>();
-        glycemicIndexList.add(glycemicIndex1);
-        glycemicIndexList.add(glycemicIndex2);
+        List<Product> productList = new ArrayList<Product>();
+        productList.add(product1);
+        productList.add(product2);
 
-        assertEquals(glycemicIndex1.hashCode(), glycemicIndex2.hashCode());
-        assertEquals(true, glycemicIndex1.equals(glycemicIndex2));
-        assertEquals(true, glycemicIndexList.contains(glycemicIndex2));
+        assertEquals(product1.hashCode(), product2.hashCode());
+        assertEquals(true, product1.equals(product2));
+        assertEquals(true, productList.contains(product2));
     }
 
     @Test
     public void testNotEquals(){
-        GlycemicIndex glycemicIndex1 = new GlycemicIndex("title1", "","");
-        GlycemicIndex glycemicIndex2 = new GlycemicIndex("title2","","");
+        Product product1 = new Product("title1", "","");
+        Product product2 = new Product("title2","","");
 
-        assertTrue(glycemicIndex1.hashCode() != glycemicIndex2.hashCode());
-        assertEquals(false, glycemicIndex1.equals(glycemicIndex2));
+        assertTrue(product1.hashCode() != product2.hashCode());
+        assertEquals(false, product1.equals(product2));
     }
 }

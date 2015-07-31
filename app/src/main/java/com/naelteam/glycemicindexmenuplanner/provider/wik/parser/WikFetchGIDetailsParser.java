@@ -2,15 +2,14 @@ package com.naelteam.glycemicindexmenuplanner.provider.wik.parser;
 
 import android.util.Log;
 
-import com.naelteam.glycemicindexmenuplanner.model.WikSection;
-import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
+import com.naelteam.glycemicindexmenuplanner.model.Section;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,15 +30,15 @@ public class WikFetchGIDetailsParser {
     private static final String SEEALSO_VALUE = "See also";
     private static final String REFERENCES_VALUE = "References";
 
-    public WikProduct parse(String data) {
+    public Product parse(String data) {
         Document doc  = Jsoup.parse(new String(data));
         Log.d(TAG, "Connected to data");
-        WikProduct wikProduct = new WikProduct();
+        Product product = new Product();
 
         Elements titleEl = doc.getElementsByClass(FIRST_HEADING_TAG);
 
         if (titleEl.size() > 0){
-            wikProduct.setTitle(titleEl.first().text());
+            product.setTitle(titleEl.first().text());
         }
 
         Element contentElement = doc.getElementById(DEFAULT_CONTENT_TAG);
@@ -57,7 +56,7 @@ public class WikFetchGIDetailsParser {
                 Elements imgElements = thumbElement.getElementsByTag("img");
                 String imgUrl = imgElements.first().attr("src");
                 Log.d(TAG, "imgUrl = " + imgUrl);
-                wikProduct.setThumbnailUrl("https:" + imgUrl);
+                product.setThumbnailUrl("https:" + imgUrl);
             }
 
             Elements childElements = contentElement.children();
@@ -74,12 +73,12 @@ public class WikFetchGIDetailsParser {
                     }
                 }
                 builder.append("<a href='http://www.google.com'>http://www.google.com</a>");
-                wikProduct.setDescription(builder.toString());
+                product.setDescription(builder.toString());
             }
 
             Elements sectionElements = contentElement.getElementsByTag("h2");
             if (sectionElements!=null){
-                WikSection wikSection = null;
+                Section section = null;
                 for (Element sectionElement:sectionElements){
 
                     Elements titleElements = sectionElement.getElementsByClass(HEADLINE_TAG);
@@ -88,31 +87,31 @@ public class WikFetchGIDetailsParser {
                         if (discardTags(text)){
                             break;
                         }
-                        wikSection = new WikSection(text);
+                        section = new Section(text);
                     }
                     Element nextElementSibling = sectionElement.nextElementSibling();
 
-                    WikSection subWikSection = null;
+                    Section subSection = null;
                     while ((nextElementSibling != null) && (!nextElementSibling.tagName().equals("h2"))) {
                         if (nextElementSibling.tagName().equals("h3")) {
-                            subWikSection = new WikSection();
-                            subWikSection.setTitle(filterText(nextElementSibling.text()));
-                            wikSection.addSection(subWikSection);
+                            subSection = new Section();
+                            subSection.setTitle(filterText(nextElementSibling.text()));
+                            section.addSection(subSection);
                         } else if (nextElementSibling.tagName().equals("p")) {
                             String text = nextElementSibling.text();
-                            if (subWikSection != null) {
-                                String description = subWikSection.getDescription();
+                            if (subSection != null) {
+                                String description = subSection.getDescription();
                                 if (description != null && (!description.isEmpty())) {
-                                    subWikSection.setDescription(description + "\r\n" + "\r\n" + text);
+                                    subSection.setDescription(description + "\r\n" + "\r\n" + text);
                                 } else {
-                                    subWikSection.setDescription(text);
+                                    subSection.setDescription(text);
                                 }
                             } else {
-                                String description = wikSection.getDescription();
+                                String description = section.getDescription();
                                 if (description != null && (!description.isEmpty())) {
-                                    wikSection.setDescription(description + "\r\n" + "\r\n" + text);
+                                    section.setDescription(description + "\r\n" + "\r\n" + text);
                                 } else {
-                                    wikSection.setDescription(text);
+                                    section.setDescription(text);
                                 }
                             }
                         } else {
@@ -126,23 +125,23 @@ public class WikFetchGIDetailsParser {
                                     Log.d(TAG, "imgSubUrl = " + imgSubUrl);
                                     imgSubUrls[++count] = "https:" + imgSubUrl;
                                 }
-                                if (subWikSection != null) {
-                                    subWikSection.setImagesUrl(imgSubUrls);
+                                if (subSection != null) {
+                                    subSection.setImagesUrl(imgSubUrls);
                                 } else {
-                                    wikSection.setImagesUrl(imgSubUrls);
+                                    section.setImagesUrl(imgSubUrls);
                                 }
                             }
                         }
                         nextElementSibling = nextElementSibling.nextElementSibling();
                     }
-                    if (wikSection != null){
-                        wikProduct.addSection(wikSection);
+                    if (section != null){
+                        product.addSection(section);
                     }
                 }
             }
         }
 
-        return wikProduct;
+        return product;
     }
 
     private String filterText(String text) {

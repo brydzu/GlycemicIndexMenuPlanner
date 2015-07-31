@@ -17,23 +17,23 @@ import org.robolectric.annotation.Config;
 @Config(constants = BuildConfig.class, sdk = 21, manifest = "/src/main/AndroidManifest.xml")
 public class GlycemicIndexListTest extends TestCase{
 
-    private GlycemicIndexList sut;
+    private ProductList sut;
 
     @Before
     public void setup()  {
-        sut = new GlycemicIndexList();
+        sut = new ProductList();
     }
 
     @Test
     public void testGIListParcelable(){
 
-        sut.add(new GlycemicIndex("title1","",""));
-        sut.add(new GlycemicIndex("title2","",""));
+        sut.add(new Product("title1","",""));
+        sut.add(new Product("title2","",""));
         Parcel parcel = Parcel.obtain();
         sut.writeToParcel(parcel, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
         parcel.setDataPosition(0);
 
-        GlycemicIndexList list2 = GlycemicIndexList.CREATOR.createFromParcel(parcel);
+        ProductList list2 = ProductList.CREATOR.createFromParcel(parcel);
         assertEquals(2, list2.size());
     }
 

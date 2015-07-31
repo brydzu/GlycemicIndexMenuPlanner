@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.naelteam.glycemicindexmenuplanner.event.ReturnSearchGIByNameReturnEvent;
 import com.naelteam.glycemicindexmenuplanner.event.SearchGIByNameEvent;
-import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -34,7 +34,7 @@ public class DetailsGIPresenter {
             mListener.onSearchDetailGIError();
         }else {
             Log.d(TAG, "onEvent - ReturnSearchGIByNameReturnEvent, Success");
-            mListener.onSearchDetailGISuccess(event.getWikProduct());
+            mListener.onSearchDetailGISuccess(event.getProduct());
         }
     }
 
@@ -47,7 +47,7 @@ public class DetailsGIPresenter {
     }
 
     public interface Listener{
-        void onSearchDetailGISuccess(WikProduct wikProduct);
+        void onSearchDetailGISuccess(Product product);
         void onSearchDetailGIError();
     }
 }

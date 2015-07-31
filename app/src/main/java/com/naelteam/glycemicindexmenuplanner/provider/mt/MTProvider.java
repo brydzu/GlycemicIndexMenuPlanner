@@ -6,9 +6,8 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.naelteam.glycemicindexmenuplanner.event.GetListGIEvent;
 import com.naelteam.glycemicindexmenuplanner.event.ReturnListGIReturnEvent;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.network.CustomVolleyRequest;
-import com.naelteam.glycemicindexmenuplanner.network.VolleyUtils;
 import com.naelteam.glycemicindexmenuplanner.network.VolleyWrapper;
 import com.naelteam.glycemicindexmenuplanner.network.error.BaseError;
 import com.naelteam.glycemicindexmenuplanner.provider.mt.parser.SearchGIByProdNameParser;
@@ -39,9 +38,9 @@ public class MTProvider {
     }
 
     public void searchGlycemicIndexesByProductName(String searchStr, Language language) {
-        CustomVolleyRequest request = new CustomVolleyRequest(Request.Method.POST, MT_SEARCH_BY_PROD_NAME_URL, new SearchGIByProdNameParser(), new CustomVolleyRequest.Listener<List<GlycemicIndex>>() {
+        CustomVolleyRequest request = new CustomVolleyRequest(Request.Method.POST, MT_SEARCH_BY_PROD_NAME_URL, new SearchGIByProdNameParser(), new CustomVolleyRequest.Listener<List<Product>>() {
             @Override
-            public void onSuccess(List<GlycemicIndex> glycemicIndexes) {
+            public void onSuccess(List<Product> glycemicIndexes) {
                 Log.d(TAG, "searchGlycemicIndexes - onSuccess");
             }
 
@@ -56,9 +55,9 @@ public class MTProvider {
 
     @Subscribe
     public void onEvent(GetListGIEvent event){
-       CustomVolleyRequest request = new CustomVolleyRequest(Request.Method.GET, MT_LIST_GI_URL, new SearchListGIParser(), new CustomVolleyRequest.Listener<List<GlycemicIndex>>() {
+       CustomVolleyRequest request = new CustomVolleyRequest(Request.Method.GET, MT_LIST_GI_URL, new SearchListGIParser(), new CustomVolleyRequest.Listener<List<Product>>() {
             @Override
-            public void onSuccess(List<GlycemicIndex> glycemicIndexes) {
+            public void onSuccess(List<Product> glycemicIndexes) {
                 Log.d(TAG, "listGlycemicIndexes - onSuccess");
                 EventBus.getDefault().post(new ReturnListGIReturnEvent(glycemicIndexes, null));
             }
@@ -83,7 +82,7 @@ public class MTProvider {
     }
 
     public interface Listener{
-        void onListGlycemicIndexesSuccess(List<GlycemicIndex> glycemicIndexes);
+        void onListGlycemicIndexesSuccess(List<Product> products);
         void onListGlycemicIndexesError(BaseError error);
     }
 

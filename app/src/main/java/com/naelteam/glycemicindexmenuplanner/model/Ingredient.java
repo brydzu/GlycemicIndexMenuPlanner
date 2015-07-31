@@ -7,7 +7,7 @@ public class Ingredient {
 
     private String amount;
     private String unit;
-    private String name;
+    private String productId;
     private String otherInfo;
 
     public String getAmount() {
@@ -26,12 +26,12 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public String getName() {
-        return name;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getOtherInfo() {

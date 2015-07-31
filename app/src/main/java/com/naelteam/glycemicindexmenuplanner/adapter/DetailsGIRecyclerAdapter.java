@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.naelteam.glycemicindexmenuplanner.R;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
-import com.naelteam.glycemicindexmenuplanner.model.WikSection;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
+import com.naelteam.glycemicindexmenuplanner.model.ProductGroup;
+import com.naelteam.glycemicindexmenuplanner.model.Section;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
 
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
-    private List<WikSection> mDatas=new ArrayList<WikSection>();
+    private List<Section> mDatas=new ArrayList<Section>();
 
     public DetailsGIRecyclerAdapter(Context context){
         mContext = context;
@@ -37,8 +37,8 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
         mOnItemClickListener = clickListener;
     }
 
-    public void add(WikSection wikSection){
-        mDatas.add(wikSection);
+    public void add(Section section){
+        mDatas.add(section);
         notifyItemInserted(mDatas.size());
     }
 
@@ -56,7 +56,7 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
     @Override
     public void onBindViewHolder(MainViewHolder viewHolder, int position) {
 
-        final WikSection section = mDatas.get(position);
+        final Section section = mDatas.get(position);
         if (viewHolder instanceof SectionTitleViewHolder) {
             TextView textView = ((SectionTitleViewHolder) viewHolder).mTitleTextView;
             textView.setText(section.getTitle());
@@ -83,12 +83,12 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
         return mDatas.size();
     }
 
-    public void addAll(List<WikSection> wikSections, int position, int nbItems) {
+    public void addAll(List<Section> sections, int position, int nbItems) {
         Log.d(TAG, "addAll - position = " + position + ", nbItems = " + nbItems);
         if (nbItems > 0) {
             int i = position;
-            for (WikSection wikSection : wikSections) {
-                mDatas.add(i, wikSection);
+            for (Section section : sections) {
+                mDatas.add(i, section);
                 i++;
             }
             notifyItemRangeInserted(position, nbItems);
@@ -107,8 +107,8 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
     }
 
     public interface OnItemClickListener {
-        void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition);
-        void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition);
+        void onLoadGIGroup(ProductGroup productGroup, View itemView, int layoutPosition);
+        void onClickGIItem(Product product, int layoutPosition);
     }
 
     class MainViewHolder extends RecyclerView.ViewHolder{
@@ -134,7 +134,7 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
                 public void onClick(View view) {
                     Log.d(TAG, "onLoadGIGroup - view CLICKED");
 
-                    final GlycemicIndexGroup glycemicIndexGroup = (GlycemicIndexGroup) mDatas.get(getLayoutPosition());
+                    final ProductGroup glycemicIndexGroup = (ProductGroup) mDatas.get(getLayoutPosition());
                     if (mOnItemClickListener != null){
                         mOnItemClickListener.onLoadGIGroup(glycemicIndexGroup, itemView, getLayoutPosition());
                     }
@@ -156,7 +156,7 @@ public class DetailsGIRecyclerAdapter extends RecyclerView.Adapter<DetailsGIRecy
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "onClickGIItem - view CLICKED");
-                    final WikSection section = (WikSection) mDatas.get(getLayoutPosition());
+                    final Section section = (Section) mDatas.get(getLayoutPosition());
 
                     if (mOnItemClickListener != null){
                         mOnItemClickListener.onClickGIItem(section, getLayoutPosition());

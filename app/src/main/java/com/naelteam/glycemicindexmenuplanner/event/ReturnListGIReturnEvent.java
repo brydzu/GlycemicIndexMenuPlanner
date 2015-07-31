@@ -1,6 +1,6 @@
 package com.naelteam.glycemicindexmenuplanner.event;
 
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
 
 import java.util.List;
 
@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class ReturnListGIReturnEvent extends BaseReturnEvent {
 
-    private List<GlycemicIndex> mGlycemicIndexes;
+    private List<Product> mProducts;
 
-    public ReturnListGIReturnEvent(List<GlycemicIndex> glycemicIndexes, Throwable error){
+    public ReturnListGIReturnEvent(List<Product> products, Throwable error){
         super(error);
-        mGlycemicIndexes = glycemicIndexes;
+        mProducts = products;
     }
 
-    public List<GlycemicIndex> getGlycemicIndexes() {
-        return mGlycemicIndexes;
+    public List<Product> getGlycemicIndexes() {
+        return mProducts;
     }
 
 

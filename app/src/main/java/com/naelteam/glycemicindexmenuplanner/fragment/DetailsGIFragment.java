@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,17 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
 import com.naelteam.glycemicindexmenuplanner.adapter.DetailsGIRecyclerAdapter;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
-import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
-import com.naelteam.glycemicindexmenuplanner.model.WikSection;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
+import com.naelteam.glycemicindexmenuplanner.model.ProductGroup;
+import com.naelteam.glycemicindexmenuplanner.model.Section;
 import com.naelteam.glycemicindexmenuplanner.presenter.DetailsGIPresenter;
-import com.naelteam.glycemicindexmenuplanner.view.DividerItemDecoration;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,7 +31,7 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     private static final String TAG = DetailsGIFragment.class.getSimpleName();
     private ProgressDialog mProgressdialog;
     private DetailsGIPresenter mDetailsGIPresenter;
-    private GlycemicIndex mGlycemicIndex;
+    private Product mProduct;
     private DetailsGIRecyclerAdapter mDetailsGIRecyclerAdapter;
     private RecyclerView mRecyclerView;
 
@@ -45,10 +39,10 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
         mDisplayFloatingButton = false;
     }
 
-    public static Fragment newInstance(GlycemicIndex glycemicIndex) {
+    public static Fragment newInstance(Product product) {
         DetailsGIFragment fragment = new DetailsGIFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GLYCEMIC_INDEX, glycemicIndex);
+        bundle.putParcelable(GLYCEMIC_INDEX, product);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -67,9 +61,9 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
 
         Bundle arguments = getArguments();
         if (arguments!=null){
-            GlycemicIndex glycemicIndex = arguments.getParcelable(GLYCEMIC_INDEX);
-            if (glycemicIndex != null){
-                mGlycemicIndex = glycemicIndex;
+            Product product = arguments.getParcelable(GLYCEMIC_INDEX);
+            if (product != null){
+                mProduct = product;
             }
         }
     }
@@ -95,11 +89,11 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
 
         mDetailsGIRecyclerAdapter = new DetailsGIRecyclerAdapter(getActivity(), new DetailsGIRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition) {
+            public void onLoadGIGroup(ProductGroup productGroup, View itemView, int layoutPosition) {
             }
 
             @Override
-            public void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition) {
+            public void onClickGIItem(Product product, int layoutPosition) {
             }
         });
 
@@ -119,7 +113,7 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
         Log.d(TAG, "onStart - ");
 
         mProgressdialog = ProgressDialog.show(getActivity(), "", "Loading...", true);
-        mDetailsGIPresenter.searchDetailsOnGlycemicIndex(mGlycemicIndex.getTitle());
+        mDetailsGIPresenter.searchDetailsOnGlycemicIndex(mProduct.getTitle());
     }
 
     @Override
@@ -156,50 +150,50 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
     }
 
     @Override
-    public void onSearchDetailGISuccess(final WikProduct wikProduct) {
+    public void onSearchDetailGISuccess(final Product product) {
         closeProgressDialog();
 
-        Log.d(TAG, "onSearchDetailGISuccess - wikProduct = " + wikProduct);
+        Log.d(TAG, "onSearchDetailGISuccess - product = " + product);
 
         final Context context = getActivity();
-        if (wikProduct != null){
-            Log.d(TAG, "handleMessage - getThumbnailUrl = " + wikProduct.getThumbnailUrl());
+        if (product != null){
+            Log.d(TAG, "handleMessage - getThumbnailUrl = " + product.getThumbnailUrl());
 
-            setCollapsingToolbarLayoutTitle(wikProduct.getTitle());
+            setCollapsingToolbarLayoutTitle(product.getTitle());
 
             mImageToolbar.setVisibility(View.VISIBLE);
-            Picasso.with(context).load(wikProduct.getThumbnailUrl()).into(mImageToolbar);
+            Picasso.with(context).load(product.getThumbnailUrl()).into(mImageToolbar);
 
-            Log.d(TAG, "handleMessage - description = " + wikProduct.getDescription());
+            Log.d(TAG, "handleMessage - description = " + product.getDescription());
 
             //flatten section list for the recyclerview
-            List<WikSection> wikSections = new ArrayList<WikSection>();
+            List<Section> sections = new ArrayList<Section>();
 
             // add description as first row of the list
-            WikSection wikSection = new WikSection();
-            wikSection.setDescription(wikProduct.getDescription());
-            wikSections.add(wikSection);
+            Section wikSection = new Section();
+            wikSection.setDescription(product.getDescription());
+            sections.add(wikSection);
 
-            for (WikSection section:wikProduct.getWikSections()){
-                WikSection newSectionTitle = new WikSection(section.getTitle());
-                wikSections.add(newSectionTitle);
+            for (Section section:product.getSections()){
+                Section newSectionTitle = new Section(section.getTitle());
+                sections.add(newSectionTitle);
                 if (section.getDescription()!=null && (!section.getDescription().isEmpty())) {
                     section.setTitle(null);
-                    wikSections.add(section);
+                    sections.add(section);
                 }
                 if (section.getSections()!=null) {
-                    for (WikSection subSection : section.getSections()) {
-                        WikSection newSubSectionTitle = new WikSection(subSection.getTitle());
+                    for (Section subSection : section.getSections()) {
+                        Section newSubSectionTitle = new Section(subSection.getTitle());
                         newSubSectionTitle.setSubTitle(true);
-                        wikSections.add(newSubSectionTitle);
+                        sections.add(newSubSectionTitle);
                         subSection.setTitle(null);
-                        wikSections.add(subSection);
+                        sections.add(subSection);
                     }
                     section.clearSections();
                 }
             }
-            Log.d(TAG, "handleMessage - flatten wikSections size = " +  wikSections.size());
-            mDetailsGIRecyclerAdapter.addAll(wikSections, 0, wikSections.size());
+            Log.d(TAG, "handleMessage - flatten sections size = " +  sections.size());
+            mDetailsGIRecyclerAdapter.addAll(sections, 0, sections.size());
             mRecyclerView.setVisibility(View.VISIBLE);
 
         }

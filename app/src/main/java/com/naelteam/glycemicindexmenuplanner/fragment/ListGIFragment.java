@@ -20,8 +20,8 @@ import com.naelteam.glycemicindexmenuplanner.adapter.ListGIRecyclerAdapter;
 import com.naelteam.glycemicindexmenuplanner.dialog.DialogListener;
 import com.naelteam.glycemicindexmenuplanner.dialog.SearchGIDialog;
 import com.naelteam.glycemicindexmenuplanner.event.UISearchGIEvent;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
+import com.naelteam.glycemicindexmenuplanner.model.ProductGroup;
 import com.naelteam.glycemicindexmenuplanner.model.IGlycemicIndex;
 import com.naelteam.glycemicindexmenuplanner.presenter.ListGIPresenter;
 import com.naelteam.glycemicindexmenuplanner.view.DividerItemDecoration;
@@ -84,14 +84,14 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
 
         mAdapter = new ListGIRecyclerAdapter(getActivity(), mListGIPresenter.getInitialDatas(), new ListGIRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onLoadGIGroup(GlycemicIndexGroup glycemicIndexGroup, View itemView, int layoutPosition) {
-                Log.d(TAG, "onLoadGIGroup - glycemicIndexGroup.isExpanded() = " + glycemicIndexGroup.isExpanded());
-                if (glycemicIndexGroup.isExpanded()){
-                    mAdapter.collapseGlycemicGroup(glycemicIndexGroup, layoutPosition);
+            public void onLoadGIGroup(ProductGroup productGroup, View itemView, int layoutPosition) {
+                Log.d(TAG, "onLoadGIGroup - productGroup.isExpanded() = " + productGroup.isExpanded());
+                if (productGroup.isExpanded()){
+                    mAdapter.collapseGlycemicGroup(productGroup, layoutPosition);
                 }else {
-                    List<IGlycemicIndex> glycemicIndexes = mListGIPresenter.getData(glycemicIndexGroup.getTitle());
+                    List<IGlycemicIndex> glycemicIndexes = mListGIPresenter.getData(productGroup.getTitle());
                     if (glycemicIndexes.size() > 0) {
-                        mAdapter.expandGlycemicGroup(glycemicIndexGroup, glycemicIndexes, layoutPosition);
+                        mAdapter.expandGlycemicGroup(productGroup, glycemicIndexes, layoutPosition);
                         if (itemView != null) {
                             Snackbar.make(itemView, getString(R.string.loading_data), Snackbar.LENGTH_SHORT).show();
                         }
@@ -100,9 +100,9 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
             }
 
             @Override
-            public void onClickGIItem(GlycemicIndex glycemicIndex, int layoutPosition) {
+            public void onClickGIItem(Product product, int layoutPosition) {
                 Log.d(TAG, "onClickGIItem - ");
-                mActivityInterface.onDisplayGlycemicIndexDetails(glycemicIndex);
+                mActivityInterface.onDisplayGlycemicIndexDetails(product);
             }
         });
 

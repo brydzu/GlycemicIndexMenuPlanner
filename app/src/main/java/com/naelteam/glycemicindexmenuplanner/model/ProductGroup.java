@@ -3,7 +3,7 @@ package com.naelteam.glycemicindexmenuplanner.model;
 /**
  * Created by fab on 18/06/15.
  */
-public class GlycemicIndexGroup implements IGlycemicIndex{
+public class ProductGroup implements IGlycemicIndex{
 
     private String mTitle;
 
@@ -11,7 +11,7 @@ public class GlycemicIndexGroup implements IGlycemicIndex{
 
     private Integer mNbItems;
 
-    public GlycemicIndexGroup(String title) {
+    public ProductGroup(String title) {
         mTitle = title;
     }
 
@@ -55,7 +55,7 @@ public class GlycemicIndexGroup implements IGlycemicIndex{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        GlycemicIndexGroup other = (GlycemicIndexGroup) obj;
+        ProductGroup other = (ProductGroup) obj;
         if (mTitle == null) {
             if (other.getTitle() != null)
                 return false;

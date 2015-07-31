@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.naelteam.glycemicindexmenuplanner.event.ReturnSearchGIByNameReturnEvent;
 import com.naelteam.glycemicindexmenuplanner.event.SearchGIByNameEvent;
-import com.naelteam.glycemicindexmenuplanner.model.WikProduct;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.network.WikSearchGIByNameService;
 import com.naelteam.glycemicindexmenuplanner.provider.mt.MTProvider;
 
@@ -35,11 +35,11 @@ public class WikProvider {
 
         WikSearchGIByNameService service = new WikSearchGIByNameService(getBaseUrl(Locale.ENGLISH));
 
-        Observable<WikProduct> observable = service.getProductDetails(event.getSearchStr());
-        observable.subscribe(new Action1<WikProduct>() {
+        Observable<Product> observable = service.getProductDetails(event.getSearchStr());
+        observable.subscribe(new Action1<Product>() {
             @Override
-            public void call(WikProduct wikProduct) {
-                EventBus.getDefault().post(new ReturnSearchGIByNameReturnEvent(wikProduct, null));
+            public void call(Product product) {
+                EventBus.getDefault().post(new ReturnSearchGIByNameReturnEvent(product, null));
             }
         },new Action1<Throwable>() {
             @Override

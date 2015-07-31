@@ -6,9 +6,9 @@ import android.util.Log;
 import com.naelteam.glycemicindexmenuplanner.event.GetListGIEvent;
 import com.naelteam.glycemicindexmenuplanner.event.ReturnListGIReturnEvent;
 import com.naelteam.glycemicindexmenuplanner.event.UISearchGIEvent;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndex;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexGroup;
-import com.naelteam.glycemicindexmenuplanner.model.GlycemicIndexList;
+import com.naelteam.glycemicindexmenuplanner.model.Product;
+import com.naelteam.glycemicindexmenuplanner.model.ProductGroup;
+import com.naelteam.glycemicindexmenuplanner.model.ProductList;
 import com.naelteam.glycemicindexmenuplanner.model.IGlycemicIndex;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ListGIPresenter {
 
     private Listener mListener;
 
-    private GlycemicIndexList mGlycemicIndexList;
+    private ProductList mProductList;
 
     public ListGIPresenter(Listener listener){
         mListener = listener;
@@ -35,31 +35,31 @@ public class ListGIPresenter {
     public List<IGlycemicIndex> getInitialDatas(){
         List<IGlycemicIndex> datas = new ArrayList<IGlycemicIndex>();
         for (int i = 65; i < 91; i++) {
-            datas.add(new GlycemicIndexGroup(Character.toChars(i)[0] + ""));
+            datas.add(new ProductGroup(Character.toChars(i)[0] + ""));
         }
         return datas;
     }
 
     public Parcelable getDataList(){
-        return mGlycemicIndexList;
+        return mProductList;
     }
 
     public void setDataList(Parcelable parcelable){
-        mGlycemicIndexList = (GlycemicIndexList) parcelable;
+        mProductList = (ProductList) parcelable;
     }
 
     public int getDataCount(){
-        if (mGlycemicIndexList!=null){
-            return mGlycemicIndexList.size();
+        if (mProductList !=null){
+            return mProductList.size();
         }
         return 0;
     }
 
     public List<IGlycemicIndex> getData(String filter){
         List<IGlycemicIndex> datas = new ArrayList<IGlycemicIndex>();
-        for (GlycemicIndex glycemicIndex:mGlycemicIndexList.getList()){
-            if (glycemicIndex.getTitle().toLowerCase().startsWith(filter.toLowerCase())){
-                datas.add(glycemicIndex);
+        for (Product product : mProductList.getList()){
+            if (product.getTitle().toLowerCase().startsWith(filter.toLowerCase())){
+                datas.add(product);
             }
         }
         return datas;
@@ -70,7 +70,7 @@ public class ListGIPresenter {
 
         /*DataProvider.getMTProvider().listGlycemicIndexes(new MTProvider.Listener() {
             @Override
-            public void onListGlycemicIndexesSuccess(List<GlycemicIndex> glycemicIndexes) {
+            public void onListGlycemicIndexesSuccess(List<Product> glycemicIndexes) {
             }
             @Override
             public void onListGlycemicIndexesError(BaseError error) {
@@ -85,7 +85,7 @@ public class ListGIPresenter {
             mListener.onListGIError();
         }else {
             Log.d(TAG, "onEvent - Success");
-            mGlycemicIndexList = new GlycemicIndexList(event.getGlycemicIndexes());
+            mProductList = new ProductList(event.getGlycemicIndexes());
             mListener.onListGISuccess();
         }
     }
