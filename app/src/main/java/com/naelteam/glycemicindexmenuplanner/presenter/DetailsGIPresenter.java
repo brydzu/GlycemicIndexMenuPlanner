@@ -2,6 +2,7 @@ package com.naelteam.glycemicindexmenuplanner.presenter;
 
 import android.util.Log;
 
+import com.naelteam.glycemicindexmenuplanner.dao.ProductDao;
 import com.naelteam.glycemicindexmenuplanner.event.ReturnSearchGIByNameReturnEvent;
 import com.naelteam.glycemicindexmenuplanner.event.SearchGIByNameEvent;
 import com.naelteam.glycemicindexmenuplanner.model.Product;
@@ -30,7 +31,7 @@ public class DetailsGIPresenter {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onReturnSearchGIByNameReturnEvent(ReturnSearchGIByNameReturnEvent event){
         if (event.getError()!= null){
-            Log.d(TAG, "onEvent - ReturnSearchGIByNameReturnEvent, Error " + event.getError());
+            Log.d(TAG, "onEvent MainThread- ReturnSearchGIByNameReturnEvent, Error " + event.getError());
             mListener.onSearchDetailGIError();
         }else {
             Log.d(TAG, "onEvent - ReturnSearchGIByNameReturnEvent, Success");

@@ -9,16 +9,21 @@ import java.util.List;
  */
 public class ReturnListGIReturnEvent extends BaseReturnEvent {
 
+    private boolean persistData;
     private List<Product> mProducts;
 
-    public ReturnListGIReturnEvent(List<Product> products, Throwable error){
+    public ReturnListGIReturnEvent(List<Product> products, boolean persistData, Throwable error){
         super(error);
         mProducts = products;
+        this.persistData = persistData;
     }
 
-    public List<Product> getGlycemicIndexes() {
+    public List<Product> getProducts() {
         return mProducts;
     }
 
+    public boolean needPersistData(){
+        return persistData;
+    }
 
 }

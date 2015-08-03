@@ -10,6 +10,7 @@ import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.network.CustomVolleyRequest;
 import com.naelteam.glycemicindexmenuplanner.network.VolleyWrapper;
 import com.naelteam.glycemicindexmenuplanner.network.error.BaseError;
+import com.naelteam.glycemicindexmenuplanner.provider.CouchDBManager;
 import com.naelteam.glycemicindexmenuplanner.provider.mt.parser.SearchGIByProdNameParser;
 import com.naelteam.glycemicindexmenuplanner.provider.mt.parser.SearchListGIParser;
 
@@ -50,22 +51,22 @@ public class MTProvider {
             }
         });
         VolleyWrapper.getInstance().addRequest(request);
-
     }
 
     @Subscribe
     public void onEvent(GetListGIEvent event){
+
        CustomVolleyRequest request = new CustomVolleyRequest(Request.Method.GET, MT_LIST_GI_URL, new SearchListGIParser(), new CustomVolleyRequest.Listener<List<Product>>() {
             @Override
-            public void onSuccess(List<Product> glycemicIndexes) {
-                Log.d(TAG, "listGlycemicIndexes - onSuccess");
-                EventBus.getDefault().post(new ReturnListGIReturnEvent(glycemicIndexes, null));
+            public void onSuccess(List<Product> products) {
+                Log.d(TAG, "listGlycemicIndexes - onSuccess, fetch " + products.size() + " products from network");
+                EventBus.getDefault().post(new ReturnListGIReturnEvent(products, true, null));
             }
 
             @Override
             public void onError(VolleyError volleyError) {
                 Log.d(TAG, "listGlycemicIndexes - onError");
-                EventBus.getDefault().post(new ReturnListGIReturnEvent(null, volleyError));
+                EventBus.getDefault().post(new ReturnListGIReturnEvent(null, false, volleyError));
             }
         });
         VolleyWrapper.getInstance().addRequest(request);

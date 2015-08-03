@@ -1,7 +1,11 @@
 package com.naelteam.glycemicindexmenuplanner.dao;
 
+import android.util.Log;
+
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Document;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
 import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.model.Section;
 import com.naelteam.glycemicindexmenuplanner.provider.CouchDBManager;
@@ -27,25 +31,75 @@ public class ProductDao {
 
     private CouchDBManager dbManager = CouchDBManager.getInstance();
 
+    public List<Product> listAllProducts(){
+        Log.d(TAG, "List all products");
+        long timeIn = System.currentTimeMillis();
+
+        try {
+            QueryEnumerator enumerator = dbManager.list();
+            List<Product> products = new ArrayList<>();
+            while (enumerator.hasNext()){
+                QueryRow queryRow = enumerator.next();
+                Map<String, Object> properties = (Map) queryRow.getValue();
+                products.add(loadProductFromProperties(properties));
+            }
+            Log.d(TAG, "List all products size = " + products.size() + ", done in " + (System.currentTimeMillis() - timeIn) + " ms");
+            return products;
+        } catch (CouchbaseLiteException e) {
+            Log.e(TAG, "Unexpected error on list all products", e);
+        }
+        return null;
+    }
+
     public Product fetchProduct(String id){
         Map<String, Object> properties = dbManager.getDocument(id);
         return loadProductFromProperties(properties);
     }
 
-    public void insertProduct(Product product) throws CouchbaseLiteException {
+    public boolean insertProducts(List<Product> products) {
+        try {
+            List<Map<String, Object>> propertiesList = new ArrayList<>();
+            for (Product product:products){
+                propertiesList.add(storeProperties(product));
+            }
+            dbManager.insertBatch(propertiesList, null);
 
-        Map<String, Object> properties = storeProperties(product);
-        String docId = dbManager.insert(properties, null);
-        product.setId(docId);
+            return true;
+        } catch (CouchbaseLiteException e) {
+            Log.e(TAG, "Unexpected error on insert product", e);
+        }
+        return false;
     }
 
-    public void updateProduct(Product product) throws CouchbaseLiteException {
-        Map<String, Object> properties = storeProperties(product);
-        dbManager.update(product.getId(), properties, null);
+    public boolean insertProduct(Product product) {
+        try {
+            Map<String, Object> properties = storeProperties(product);
+            String docId = dbManager.insert(properties, null);
+            product.setId(docId);
+            return true;
+        } catch (CouchbaseLiteException e) {
+            Log.e(TAG, "Unexpected error on insert product", e);
+        }
+        return false;
     }
 
-    public boolean deleteProduct(Product product) throws CouchbaseLiteException {
-        return dbManager.delete(product.getId());
+    public boolean updateProduct(Product product) {
+        try {
+            Map<String, Object> properties = storeProperties(product);
+            dbManager.update(product.getId(), properties, null);
+        } catch (CouchbaseLiteException e) {
+            Log.e(TAG, "Unexpected error on update product", e);
+        }
+        return false;
+    }
+
+    public boolean deleteProduct(Product product) {
+        try {
+            return dbManager.delete(product.getId());
+        } catch (CouchbaseLiteException e) {
+            Log.e(TAG, "Unexpected error on delete product", e);
+            }
+        return false;
     }
 
 

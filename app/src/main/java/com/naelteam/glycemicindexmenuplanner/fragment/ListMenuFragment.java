@@ -161,7 +161,7 @@ public class ListMenuFragment extends BaseFragment implements ListGIPresenter.Li
 
         Log.d(TAG, "onResume - ");
 
-        mListGIPresenter.resume();
+        mListGIPresenter.start();
     }
 
     @Override
@@ -170,7 +170,7 @@ public class ListMenuFragment extends BaseFragment implements ListGIPresenter.Li
 
         Log.d(TAG, "onPause - ");
 
-        mListGIPresenter.pause();
+        mListGIPresenter.stop();
     }
 
     @Override

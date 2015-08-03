@@ -146,6 +146,8 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
         super.onStart();
         Log.d(TAG, "onStart - ");
 
+        mListGIPresenter.start();
+
         if (mListGIPresenter.getDataCount() == 0) {
             mRecyclerView.setVisibility(View.GONE);
             mProgressdialog = ProgressDialog.show(getActivity(), "", "Loading...", true);
@@ -160,8 +162,6 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
         super.onResume();
 
         Log.d(TAG, "onResume - ");
-
-        mListGIPresenter.resume();
     }
 
     @Override
@@ -169,14 +169,14 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
         super.onPause();
 
         Log.d(TAG, "onPause - ");
-
-        mListGIPresenter.pause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop - ");
+
+        mListGIPresenter.stop();
     }
 
     private void closeProgressDialog(){

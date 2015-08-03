@@ -3,6 +3,7 @@ package com.naelteam.glycemicindexmenuplanner.presenter;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.naelteam.glycemicindexmenuplanner.dao.ProductDao;
 import com.naelteam.glycemicindexmenuplanner.event.GetListGIEvent;
 import com.naelteam.glycemicindexmenuplanner.event.ReturnListGIReturnEvent;
 import com.naelteam.glycemicindexmenuplanner.event.UISearchGIEvent;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by fab on 07/06/15.
@@ -66,27 +68,37 @@ public class ListGIPresenter {
     }
 
     public void listGlycementIndexes() {
-        EventBus.getDefault().post(new GetListGIEvent());
 
-        /*DataProvider.getMTProvider().listGlycemicIndexes(new MTProvider.Listener() {
-            @Override
-            public void onListGlycemicIndexesSuccess(List<Product> glycemicIndexes) {
-            }
-            @Override
-            public void onListGlycemicIndexesError(BaseError error) {
-            }
-        });*/
+        ProductDao productDao = new ProductDao();
+        List<Product> products = productDao.listAllProducts();
+
+        if (products!=null && products.size() > 0){
+            EventBus.getDefault().post(new ReturnListGIReturnEvent(products, false, null));
+        }else {
+            EventBus.getDefault().post(new GetListGIEvent());
+        }
     }
 
     @Subscribe
-    public void onEvent(ReturnListGIReturnEvent event){
+    public void onReturnListGIReturnEvent(ReturnListGIReturnEvent event){
         if (event.getError()!= null){
-            Log.d(TAG, "onEvent - Error " + event.getError());
+            Log.d(TAG, "onReturnListGIReturnEvent - Error " + event.getError());
             mListener.onListGIError();
         }else {
-            Log.d(TAG, "onEvent - Success");
-            mProductList = new ProductList(event.getGlycemicIndexes());
+            Log.d(TAG, "onReturnListGIReturnEvent - Success");
+            mProductList = new ProductList(event.getProducts());
             mListener.onListGISuccess();
+        }
+    }
+
+   @Subscribe(threadMode = ThreadMode.BackgroundThread)
+    public void onReturnListGIReturnEventBackground(ReturnListGIReturnEvent event){
+        if (event.getError()== null){
+            Log.d(TAG, "onReturnListGIReturnEventBackground - Success");
+            if (event.needPersistData()) {
+                ProductDao dao = new ProductDao();
+                dao.insertProducts(event.getProducts());
+            }
         }
     }
 
@@ -101,11 +113,11 @@ public class ListGIPresenter {
         }
     }
 
-    public void resume() {
+    public void start() {
         EventBus.getDefault().register(this);
     }
 
-    public void pause() {
+    public void stop() {
         EventBus.getDefault().unregister(this);
     }
 

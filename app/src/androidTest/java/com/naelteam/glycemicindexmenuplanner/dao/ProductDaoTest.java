@@ -1,7 +1,9 @@
 package com.naelteam.glycemicindexmenuplanner.dao;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
+import com.couchbase.lite.Context;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Manager;
@@ -20,31 +22,53 @@ import java.util.Map;
  */
 public class ProductDaoTest extends AndroidTestCase {
 
-    AndroidContext mAndroidContext;
+    ProductDao dao;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        mAndroidContext = new AndroidContext(getContext());
+        CouchDBManager.getInstance().init(getContext());
+        dao = new ProductDao();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        CouchDBManager.getInstance().destroy();
+    }
+
+    public void testListProducts(){
+        Product product = createProduct();
+        dao.insertProduct(product);
+
+        Product product2 = createProduct();
+        product2.setTitle("title2");
+        dao.insertProduct(product2);
+
+        List<Product> products = dao.listAllProducts();
+        Log.d("", "products size = " + products.size());
+    }
+
+    private Product createProduct(){
+        Product product = new Product();
+        product.setTitle("title");
+        product.setThumbnailUrl("http://www.google.com/image.jpg");
+        product.setDescription("description");
+        product.setValue("value");
+        Section section1 = new Section("titleSec");
+        section1.setDescription("descriptionSec");
+        section1.setImagesUrl(new String[]{"image1", "image2"});
+        Section section2 = new Section("titleSec2");
+        section2.setDescription("descriptionSec2");
+        section2.setImagesUrl(new String[]{"image3", "image4"});
+        product.addSection(section1);
+        product.addSection(section2);
+        return product;
     }
 
     public void testInsertProduct(){
         try {
-            ProductDao dao = new ProductDao();
-            Product product = new Product();
-            product.setTitle("title");
-            product.setThumbnailUrl("http://www.google.com/image.jpg");
-            product.setDescription("description");
-            product.setValue("value");
-            Section section1 = new Section("titleSec");
-            section1.setDescription("descriptionSec");
-            section1.setImagesUrl(new String[]{"image1", "image2"});
-            Section section2 = new Section("titleSec2");
-            section2.setDescription("descriptionSec2");
-            section2.setImagesUrl(new String[]{"image3", "image4"});
-            product.addSection(section1);
-            product.addSection(section2);
-
+            Product product = createProduct();
             dao.insertProduct(product);
 
             product.setTitle("title2");
@@ -68,6 +92,12 @@ public class ProductDaoTest extends AndroidTestCase {
             e.printStackTrace();
         }finally {
             CouchDBManager.getInstance().destroy();
+            CouchDBManager.getInstance().deleteCurrentDatabase();
         }
+    }
+
+    public void testDeleteDatabase() throws Exception{
+        CouchDBManager.getInstance().init(getContext());
+        assertTrue(CouchDBManager.getInstance().deleteCurrentDatabase());
     }
 }

@@ -117,14 +117,14 @@ public class EditMenuFragment extends BaseFragment{
 
         Log.d(TAG, "onResume - ");
 
-        //mDetailsGIPresenter.resume();
+        //mDetailsGIPresenter.start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        //mDetailsGIPresenter.pause();
+        //mDetailsGIPresenter.stop();
     }
 
     @Override
