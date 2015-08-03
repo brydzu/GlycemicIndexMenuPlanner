@@ -2,7 +2,8 @@
     <string name="app_name">Glycemic Index Menu Planner</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_info">Informations</string>
-    <string name="drawer_list_gi">Glycemic Index Catalog</string>
+    <string name="drawer_list_gi">Glycemic Index list</string>
+    <string name="drawer_menus">Menus</string>
     <string name="drawer_settings">Settings</string>
     <string name="open">Open</string>
     <string name="close">Close</string>

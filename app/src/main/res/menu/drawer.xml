@@ -17,8 +17,13 @@
             android:title="@string/drawer_info"/>
 
         <item
+            android:id="@+id/drawer_menu"
+            android:icon="@drawable/ic_basket_fill_grey600_36dp"
+            android:title="@string/drawer_menus"/>
+
+        <item
             android:id="@+id/drawer_settings"
-            android:icon="@drawable/ic_settings_black_36dp"
+            android:icon="@drawable/ic_settings_grey600_36dp"
             android:title="@string/drawer_settings"/>
 
     </group>
