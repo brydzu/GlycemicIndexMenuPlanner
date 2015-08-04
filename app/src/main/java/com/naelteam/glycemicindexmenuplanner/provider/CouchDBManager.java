@@ -18,17 +18,15 @@ import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 
 import java.io.ByteArrayInputStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by fg on 30/07/15.
  */
-public class CouchDBManager {
+public class CouchDbManager {
 
-    private final static String TAG = CouchDBManager.class.getSimpleName();
+    private final static String TAG = CouchDbManager.class.getSimpleName();
 
     public static final String LIST_PRODUCTS_VIEW = "LIST_PRODUCTS_VIEW";
     public static final String DB_NAME = "gi_db";
@@ -39,9 +37,9 @@ public class CouchDBManager {
 
     private static boolean initialized;
 
-    private static CouchDBManager instance = new CouchDBManager();
+    private static CouchDbManager instance = new CouchDbManager();
 
-    public static CouchDBManager getInstance(){
+    public static CouchDbManager getInstance(){
         return instance;
     }
 
@@ -111,7 +109,7 @@ public class CouchDBManager {
         }
     }
 
-    public String insert(Map<String, Object> properties, Map<String, Object> attachments) throws CouchbaseLiteException {
+    public String[] insert(Map<String, Object> properties, Map<String, Object> attachments) throws CouchbaseLiteException {
         Document document = database.createDocument();
         document.putProperties(properties);
 
@@ -123,14 +121,14 @@ public class CouchDBManager {
             }
             revision.save();
         }
-        return document.getId();
+        return new String[]{document.getId(), document.getCurrentRevisionId()};
     }
 
-    public String update(String docId, Map<String, Object> properties, Map<String, Object> attachments) throws CouchbaseLiteException {
+    public String[] update(String docId, Map<String, Object> properties, Map<String, Object> attachments) throws CouchbaseLiteException {
         Document document = database.getExistingDocument(docId);
 
         if (document != null) {
-            Log.d(TAG, "update - storing properties : docId = " + document.getId() + ", revId = " + document.getCurrentRevisionId());
+            Log.d(TAG, "update - storing properties : docId = '" + document.getId() + "', revId = " + document.getCurrentRevisionId());
 
             document.putProperties(properties);
 
@@ -141,10 +139,13 @@ public class CouchDBManager {
                     revision.setAttachment(key, "", new ByteArrayInputStream((byte[]) attachments.get(key)));
                 }
                 revision.save();
-                Log.d(TAG, "update - stored attachments : docId = " + document.getId() + ", revId = " + document.getCurrentRevisionId());
+                Log.d(TAG, "update - stored attachments : docId = '" + document.getId() + "', revId = " + document.getCurrentRevisionId());
             }
-            return document.getId();
+            return new String[]{document.getId(), document.getCurrentRevisionId()};
+        }else {
+            Log.w(TAG, "update - document with id = '" + docId + "' doesn't exist");
         }
+
         return null;
     }
 

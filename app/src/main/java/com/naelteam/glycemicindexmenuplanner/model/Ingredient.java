@@ -5,10 +5,21 @@ package com.naelteam.glycemicindexmenuplanner.model;
  */
 public class Ingredient {
 
+    private String name;
     private String amount;
-    private String unit;
+    private Unit unit;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private String productId;
-    private String otherInfo;
+    private String notes;
+
 
     public String getAmount() {
         return amount;
@@ -18,11 +29,11 @@ public class Ingredient {
         this.amount = amount;
     }
 
-    public String getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
@@ -34,11 +45,11 @@ public class Ingredient {
         this.productId = productId;
     }
 
-    public String getOtherInfo() {
-        return otherInfo;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setOtherInfo(String otherInfo) {
-        this.otherInfo = otherInfo;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

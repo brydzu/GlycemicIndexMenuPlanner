@@ -3,12 +3,12 @@ package com.naelteam.glycemicindexmenuplanner.dao;
 import android.util.Log;
 
 import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.Document;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
 import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.model.Section;
-import com.naelteam.glycemicindexmenuplanner.provider.CouchDBManager;
+import com.naelteam.glycemicindexmenuplanner.provider.CouchDbKeys;
+import com.naelteam.glycemicindexmenuplanner.provider.CouchDbManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by fg on 30/07/15.
  */
-public class ProductDao {
+public class ProductDao implements CouchDbKeys{
 
     private final static String TAG = ProductDao.class.getSimpleName();
 
@@ -29,7 +28,7 @@ public class ProductDao {
     public static final String IMAGESURL = "imagesurl";
     public static final String SECTIONS = "sections";
 
-    private CouchDBManager dbManager = CouchDBManager.getInstance();
+    private CouchDbManager dbManager = CouchDbManager.getInstance();
 
     public List<Product> listAllProducts(){
         Log.d(TAG, "List all products");
@@ -57,16 +56,19 @@ public class ProductDao {
     }
 
     public boolean insertProducts(List<Product> products) {
+        Log.d(TAG, "Insert Products");
+        long timeIn = System.currentTimeMillis();
         try {
             List<Map<String, Object>> propertiesList = new ArrayList<>();
             for (Product product:products){
                 propertiesList.add(storeProperties(product));
             }
             dbManager.insertBatch(propertiesList, null);
+            Log.d(TAG, "Insert Products size = " + products.size() + ", done in " + (System.currentTimeMillis() - timeIn) + " ms");
 
             return true;
         } catch (CouchbaseLiteException e) {
-            Log.e(TAG, "Unexpected error on insert product", e);
+            Log.e(TAG, "Unexpected error on insert products", e);
         }
         return false;
     }
@@ -74,8 +76,9 @@ public class ProductDao {
     public boolean insertProduct(Product product) {
         try {
             Map<String, Object> properties = storeProperties(product);
-            String docId = dbManager.insert(properties, null);
-            product.setId(docId);
+            String[] doc = dbManager.insert(properties, null);
+            product.setId(doc[0]);
+            product.setRevId(doc[1]);
             return true;
         } catch (CouchbaseLiteException e) {
             Log.e(TAG, "Unexpected error on insert product", e);
@@ -140,6 +143,8 @@ public class ProductDao {
 
     private Product loadProductFromProperties(Map<String, Object> properties){
         Product product = new Product();
+        product.setId((String) properties.get(ID));
+        product.setRevId((String) properties.get(REV_ID));
         product.setTitle((String) properties.get(TITLE));
         product.setValue((String) properties.get(VALUE));
         product.setDescription((String) properties.get(DESCRIPTION));

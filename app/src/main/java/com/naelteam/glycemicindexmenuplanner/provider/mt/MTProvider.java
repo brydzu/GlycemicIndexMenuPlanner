@@ -10,7 +10,6 @@ import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.network.CustomVolleyRequest;
 import com.naelteam.glycemicindexmenuplanner.network.VolleyWrapper;
 import com.naelteam.glycemicindexmenuplanner.network.error.BaseError;
-import com.naelteam.glycemicindexmenuplanner.provider.CouchDBManager;
 import com.naelteam.glycemicindexmenuplanner.provider.mt.parser.SearchGIByProdNameParser;
 import com.naelteam.glycemicindexmenuplanner.provider.mt.parser.SearchListGIParser;
 

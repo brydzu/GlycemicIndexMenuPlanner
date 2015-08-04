@@ -13,6 +13,8 @@ public class Product implements Parcelable, IGlycemicIndex{
 
     private String id;
 
+    private String revId;
+
     public static final Creator<Product> CREATOR = new Creator<Product>() {
         @Override
         public Product createFromParcel(Parcel in) {
@@ -46,6 +48,14 @@ public class Product implements Parcelable, IGlycemicIndex{
         title = in.readString();
         description = in.readString();
         value = in.readString();
+    }
+
+    public String getRevId() {
+        return revId;
+    }
+
+    public void setRevId(String revId) {
+        this.revId = revId;
     }
 
     public String getTitle() {

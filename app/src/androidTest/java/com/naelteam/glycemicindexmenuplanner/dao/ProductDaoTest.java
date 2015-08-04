@@ -3,19 +3,11 @@ package com.naelteam.glycemicindexmenuplanner.dao;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.couchbase.lite.Context;
-import com.couchbase.lite.Database;
-import com.couchbase.lite.Document;
-import com.couchbase.lite.Manager;
-import com.couchbase.lite.android.AndroidContext;
 import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.model.Section;
-import com.naelteam.glycemicindexmenuplanner.provider.CouchDBManager;
+import com.naelteam.glycemicindexmenuplanner.provider.CouchDbManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by fab on 04/07/15.
@@ -27,14 +19,14 @@ public class ProductDaoTest extends AndroidTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        CouchDBManager.getInstance().init(getContext());
+        CouchDbManager.getInstance().init(getContext());
         dao = new ProductDao();
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        CouchDBManager.getInstance().destroy();
+        CouchDbManager.getInstance().destroy();
     }
 
     public void testListProducts(){
@@ -67,37 +59,29 @@ public class ProductDaoTest extends AndroidTestCase {
     }
 
     public void testInsertProduct(){
-        try {
-            Product product = createProduct();
-            dao.insertProduct(product);
+        Product product = createProduct();
+        dao.insertProduct(product);
 
-            product.setTitle("title2");
-            dao.updateProduct(product);
+        product.setTitle("title2");
+        dao.updateProduct(product);
 
-            Product otherProduct = dao.fetchProduct(product.getId());
+        Product otherProduct = dao.fetchProduct(product.getId());
 
-            //assertEquals(otherProduct.getTitle(), product.getTitle());
-            assertEquals(otherProduct.getDescription(), product.getDescription());
-            assertEquals(otherProduct.getValue(), product.getValue());
-            assertEquals(otherProduct.getThumbnailUrl(), product.getThumbnailUrl());
+        //assertEquals(otherProduct.getTitle(), product.getTitle());
+        assertEquals(otherProduct.getDescription(), product.getDescription());
+        assertEquals(otherProduct.getValue(), product.getValue());
+        assertEquals(otherProduct.getThumbnailUrl(), product.getThumbnailUrl());
 
-            assertEquals(otherProduct.getSections().get(0).getTitle(), product.getSections().get(0).getTitle());
-            assertEquals(otherProduct.getSections().get(0).getDescription(), product.getSections().get(0).getDescription());
-            assertEquals(otherProduct.getSections().get(0).getImagesUrl()[0], product.getSections().get(0).getImagesUrl()[0]);
-            assertEquals(otherProduct.getSections().get(0).getImagesUrl()[1], product.getSections().get(0).getImagesUrl()[1]);
-            assertEquals(otherProduct.getSections().get(1).getImagesUrl()[0], product.getSections().get(1).getImagesUrl()[0]);
-            assertEquals(otherProduct.getSections().get(1).getImagesUrl()[1], product.getSections().get(1).getImagesUrl()[1]);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            CouchDBManager.getInstance().destroy();
-            CouchDBManager.getInstance().deleteCurrentDatabase();
-        }
+        assertEquals(otherProduct.getSections().get(0).getTitle(), product.getSections().get(0).getTitle());
+        assertEquals(otherProduct.getSections().get(0).getDescription(), product.getSections().get(0).getDescription());
+        assertEquals(otherProduct.getSections().get(0).getImagesUrl()[0], product.getSections().get(0).getImagesUrl()[0]);
+        assertEquals(otherProduct.getSections().get(0).getImagesUrl()[1], product.getSections().get(0).getImagesUrl()[1]);
+        assertEquals(otherProduct.getSections().get(1).getImagesUrl()[0], product.getSections().get(1).getImagesUrl()[0]);
+        assertEquals(otherProduct.getSections().get(1).getImagesUrl()[1], product.getSections().get(1).getImagesUrl()[1]);
     }
 
     public void testDeleteDatabase() throws Exception{
-        CouchDBManager.getInstance().init(getContext());
-        assertTrue(CouchDBManager.getInstance().deleteCurrentDatabase());
+        CouchDbManager.getInstance().init(getContext());
+        assertTrue(CouchDbManager.getInstance().deleteCurrentDatabase());
     }
 }

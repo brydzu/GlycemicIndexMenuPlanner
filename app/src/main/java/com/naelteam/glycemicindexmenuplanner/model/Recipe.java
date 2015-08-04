@@ -8,6 +8,10 @@ import java.util.List;
  */
 public class Recipe {
 
+    private String id;
+
+    private String revId;
+
     private String name;
 
     private Integer servings;
@@ -63,6 +67,22 @@ public class Recipe {
             this.ingredients = new ArrayList<Ingredient>();
         }
         this.ingredients.add(ingredient);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRevId() {
+        return revId;
+    }
+
+    public void setRevId(String revId) {
+        this.revId = revId;
     }
 
     public List<Ingredient> getIngredients() {
