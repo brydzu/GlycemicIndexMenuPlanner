@@ -18,6 +18,9 @@ import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -83,13 +86,44 @@ public class CouchDbManager {
         return query.run();
     }
 
-    public List<Attachment> getDocumentAttachments(String docId){
+    public List<byte[]> getDocumentAttachments(String docId, String revId) {
         Document doc = database.getExistingDocument(docId);
-        SavedRevision savedRevision = doc.getCurrentRevision();
+        SavedRevision savedRevision = doc.getRevision(revId);
+        List<byte[]> bufferBytes = null;
         if (savedRevision != null){
-            savedRevision.getAttachments();
+            final List<Attachment> attachments = savedRevision.getAttachments();
+            if (attachments !=null && attachments.size() > 0){
+            bufferBytes = new ArrayList<>();
+                for (Attachment attachment: attachments) {
+                    int nRead;
+                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                    byte[] data = new byte[16384];
+
+                    try {
+                        try {
+                            while ((nRead = attachment.getContent().read(data, 0, data.length)) != -1) {
+                                buffer.write(data, 0, nRead);
+                            }
+                        } catch (CouchbaseLiteException e) {
+                            Log.e(TAG, "Unexpected error on getting attachment " + attachment.getName(), e);
+                            return null;
+                        }
+                        buffer.flush();
+                        bufferBytes.add(buffer.toByteArray());
+                    } catch (IOException e) {
+                        Log.e(TAG, "Unexpected error on getting attachment " + attachment.getName(), e);
+                        return null;
+                    }finally {
+                        try {
+                            buffer.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
         }
-        return null;
+        return bufferBytes;
     }
 
     public void insertBatch(List<Map<String, Object>> properties, List<Map<String, Object>> attachments) throws CouchbaseLiteException {

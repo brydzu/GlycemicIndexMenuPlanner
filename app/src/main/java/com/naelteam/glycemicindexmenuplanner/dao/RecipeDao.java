@@ -50,9 +50,8 @@ public class RecipeDao implements CouchDbKeys{
                 QueryRow queryRow = enumerator.next();
                 Map<String, Object> properties = (Map) queryRow.getValue();
                 final Recipe recipe = loadRecipeFromProperties(properties);
+                loadAttachments(recipe);
                 recipes.add(recipe);
-
-                dbManager.getDocumentAttachments(recipe.getId());
             }
             Log.d(TAG, "List all recipes size = " + recipes.size() + ", done in " + (System.currentTimeMillis() - timeIn) + " ms");
             return recipes;
@@ -64,7 +63,9 @@ public class RecipeDao implements CouchDbKeys{
 
     public Recipe fetchRecipe(String id){
         Map<String, Object> properties = dbManager.getDocument(id);
-        return loadRecipeFromProperties(properties);
+        Recipe recipe = loadRecipeFromProperties(properties);
+        loadAttachments(recipe);
+        return recipe;
     }
 
     public boolean insertRecipe(Recipe recipe) {
@@ -142,6 +143,14 @@ public class RecipeDao implements CouchDbKeys{
             }
         }
         return recipe;
+    }
+
+    private void loadAttachments(Recipe recipe){
+        List<byte[]> bufAttachments = dbManager.getDocumentAttachments(recipe.getId(), recipe.getRevId());
+
+        if (bufAttachments != null && bufAttachments.size() > 0){
+            recipe.setPicture(bufAttachments.get(0));
+        }
     }
 
     private Map<String, Object> storeProperties(Recipe recipe){

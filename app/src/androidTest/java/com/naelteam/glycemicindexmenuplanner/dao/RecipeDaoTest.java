@@ -4,7 +4,6 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.naelteam.glycemicindexmenuplanner.model.Ingredient;
-import com.naelteam.glycemicindexmenuplanner.model.Product;
 import com.naelteam.glycemicindexmenuplanner.model.Recipe;
 import com.naelteam.glycemicindexmenuplanner.model.Unit;
 import com.naelteam.glycemicindexmenuplanner.provider.CouchDbManager;
@@ -53,6 +52,7 @@ public class RecipeDaoTest extends AndroidTestCase {
         recipe.setVideoLink("http://www.cooking.com/roti.mp4");
         recipe.setReference("http://www.cooking.com");
         recipe.setNotes("Notes indispensables");
+        recipe.setPicture(new byte[]{1,2,3,4,5,6,7,8,9});
 
         Ingredient ingredient1 = new Ingredient();
         ingredient1.setName("ingredient1Name");
@@ -78,32 +78,35 @@ public class RecipeDaoTest extends AndroidTestCase {
         sut.insertRecipe(recipe);
 
         Recipe otherRecipe = sut.fetchRecipe(recipe.getId());
-        assertRecipe(otherRecipe, recipe);
+        assertCompareRecipe(recipe, otherRecipe);
 
         recipe.setName("title2");
         sut.updateRecipe(recipe);
 
         Recipe otherRecipe2 = sut.fetchRecipe(recipe.getId());
-        assertRecipe(otherRecipe2, recipe);
+        assertCompareRecipe(recipe, otherRecipe2);
     }
 
-    private void assertRecipe(Recipe recipe, Recipe otherRecipe){
+    private void assertCompareRecipe(Recipe recipe, Recipe otherRecipe){
         assertEquals(otherRecipe.getCookingTime(), recipe.getCookingTime());
         assertEquals(otherRecipe.getPrepTime(), recipe.getPrepTime());
         assertEquals(otherRecipe.getNotes(), recipe.getNotes());
         assertEquals(otherRecipe.getServings(), recipe.getServings());
         assertEquals(otherRecipe.getInstructions(), recipe.getInstructions());
         assertEquals(otherRecipe.getReference(), recipe.getReference());
+        assertEquals(otherRecipe.getPicture().length, recipe.getPicture().length);
 
-        assertEquals(otherRecipe.getIngredients().size(), recipe.getIngredients().size());
+        final List<Ingredient> ingredients = recipe.getIngredients();
+        assertEquals(otherRecipe.getIngredients().size(), ingredients.size());
 
         int count=0;
         for(Ingredient ingredient:otherRecipe.getIngredients()){
-            assertEquals(ingredient.getName(), recipe.getIngredients().get(count).getName());
-            assertEquals(ingredient.getNotes(), recipe.getIngredients().get(count).getNotes());
-            assertEquals(ingredient.getAmount(), recipe.getIngredients().get(count).getAmount());
-            assertEquals(ingredient.getUnit(), recipe.getIngredients().get(count).getUnit());
-            assertEquals(ingredient.getProductId(), recipe.getIngredients().get(count).getProductId());
+            final Ingredient ingredient1 = ingredients.get(count);
+            assertEquals(ingredient.getName(), ingredient1.getName());
+            assertEquals(ingredient.getNotes(), ingredient1.getNotes());
+            assertEquals(ingredient.getAmount(), ingredient1.getAmount());
+            assertEquals(ingredient.getUnit(), ingredient1.getUnit());
+            assertEquals(ingredient.getProductId(), ingredient1.getProductId());
             count++;
         }
 

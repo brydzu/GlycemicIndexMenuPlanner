@@ -6,6 +6,6 @@ package com.naelteam.glycemicindexmenuplanner.provider;
 public interface CouchDbKeys {
 
     public static final String ID = "_id";
-    public static final String REV_ID = "_revId";
+    public static final String REV_ID = "_rev";
 
 }
