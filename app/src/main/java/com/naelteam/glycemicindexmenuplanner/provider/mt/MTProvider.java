@@ -19,7 +19,6 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 
 /**
- * Created by fab on 31/05/15.
  */
 public class MTProvider {
 
@@ -29,12 +28,12 @@ public class MTProvider {
     private final String TAG = MTProvider.class.getSimpleName();
 
     public MTProvider() {
-        Log.d(TAG, "MTProvider - Register to the EventBus..");
-        EventBus.getDefault().register(this);
+        //Log.d(TAG, "MTProvider - Register to the EventBus..");
+        //EventBus.getDefault().register(this);
     }
 
     public void destroy() {
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
     }
 
     public void searchGlycemicIndexesByProductName(String searchStr, Language language) {
@@ -52,8 +51,7 @@ public class MTProvider {
         VolleyWrapper.getInstance().addRequest(request);
     }
 
-    @Subscribe
-    public void onEvent(GetListGIEvent event){
+    public void searchAllGlycemicIndexes(){
 
        CustomVolleyRequest request = new CustomVolleyRequest(Request.Method.GET, MT_LIST_GI_URL, new SearchListGIParser(), new CustomVolleyRequest.Listener<List<Product>>() {
             @Override

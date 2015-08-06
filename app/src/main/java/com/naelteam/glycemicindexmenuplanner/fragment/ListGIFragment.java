@@ -179,6 +179,12 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
         mListGIPresenter.stop();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy - ");
+    }
+
     private void closeProgressDialog(){
         if (mProgressdialog != null){
             mProgressdialog.cancel();

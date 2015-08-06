@@ -20,7 +20,6 @@ import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
 /**
- * Created by fab on 07/06/15.
  */
 public class ListGIPresenter {
 
@@ -68,15 +67,7 @@ public class ListGIPresenter {
     }
 
     public void listGlycementIndexes() {
-
-        ProductDao productDao = new ProductDao();
-        List<Product> products = productDao.listAllProducts();
-
-        if (products!=null && products.size() > 0){
-            EventBus.getDefault().post(new ReturnListGIReturnEvent(products, false, null));
-        }else {
-            EventBus.getDefault().post(new GetListGIEvent());
-        }
+        EventBus.getDefault().post(new GetListGIEvent());
     }
 
     @Subscribe

@@ -23,4 +23,5 @@
     <string name="edit_menu_notes">Notes</string>
     <string name="edit_menu_references">References</string>
     <string name="edit_menu_video_link">Video link</string>
+    <string name="edit_menu_title">My new menu</string>
 </resources>

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements AppCompatActivity
     }
 
     @Override
-    public void hideNavigationDrawer() {
+    public void closeNavigationDrawer() {
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 

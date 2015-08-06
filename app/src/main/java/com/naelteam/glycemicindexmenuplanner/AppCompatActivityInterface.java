@@ -19,7 +19,7 @@ public interface AppCompatActivityInterface {
 
     void onInitDrawerLayout();
 
-    void hideNavigationDrawer();
+    void closeNavigationDrawer();
 
     void showNavigationDrawer();
 

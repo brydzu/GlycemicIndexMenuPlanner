@@ -8,22 +8,22 @@
         <item
             android:id="@+id/drawer_list_gi"
             android:checked="true"
-            android:icon="@drawable/ic_magnify_grey600_36dp"
+            android:icon="@drawable/ic_magnify_grey600_48dp"
             android:title="@string/drawer_list_gi"/>
 
         <item
             android:id="@+id/drawer_info"
-            android:icon="@drawable/ic_information_outline_grey600_36dp"
+            android:icon="@drawable/ic_information_outline_grey600_48dp"
             android:title="@string/drawer_info"/>
 
         <item
             android:id="@+id/drawer_menu"
-            android:icon="@drawable/ic_basket_fill_grey600_36dp"
+            android:icon="@drawable/ic_basket_fill_grey600_48dp"
             android:title="@string/drawer_menus"/>
 
         <item
             android:id="@+id/drawer_settings"
-            android:icon="@drawable/ic_settings_grey600_36dp"
+            android:icon="@drawable/ic_settings_grey600_48dp"
             android:title="@string/drawer_settings"/>
 
     </group>

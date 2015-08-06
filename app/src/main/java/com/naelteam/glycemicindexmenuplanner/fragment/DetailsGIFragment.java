@@ -80,7 +80,7 @@ public class DetailsGIFragment extends BaseFragment implements DetailsGIPresente
         super.onActivityCreated(savedInstanceState);
 
         setCollapsingToolbarLayoutTitle(getString(R.string.gi_details_title));
-        mActivityInterface.hideNavigationDrawer();
+        mActivityInterface.closeNavigationDrawer();
 
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.details_gi_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

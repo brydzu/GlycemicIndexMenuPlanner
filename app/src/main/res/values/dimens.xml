@@ -13,5 +13,7 @@
     <dimen name="status_bar_height">25dp</dimen>
     <dimen name="fab_compat_margin">0dp</dimen>
     <dimen name="gi_item_text_size">15sp</dimen>
+    <dimen name="fab_size">64dp</dimen>
+    <dimen name="padding_fab">0dp</dimen>
 
 </resources>

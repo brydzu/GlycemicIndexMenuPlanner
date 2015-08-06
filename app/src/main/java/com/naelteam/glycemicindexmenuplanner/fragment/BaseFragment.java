@@ -2,6 +2,7 @@ package com.naelteam.glycemicindexmenuplanner.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
@@ -24,6 +26,7 @@ public abstract class BaseFragment extends Fragment{
 
     protected AppCompatActivityInterface mActivityInterface;
     protected Toolbar mToolbar;
+    protected AppBarLayout mAppBarLayout;
     protected CollapsingToolbarLayout mCollapsingToolbarLayout;
     protected FloatingActionButton mFloatingActionButton;
 
@@ -43,6 +46,12 @@ public abstract class BaseFragment extends Fragment{
         initCollapsingToolbar();
 
         mActivityInterface.onInitDrawerLayout();
+    }
+
+    protected void setAppBarLayoutHeight(int height){
+        ViewGroup.LayoutParams layoutParams = mAppBarLayout.getLayoutParams();
+        layoutParams.height = height;
+        mAppBarLayout.setLayoutParams(layoutParams);
     }
 
     private void initCollapsingToolbar(){
@@ -76,6 +85,7 @@ public abstract class BaseFragment extends Fragment{
     }
 
     private void initToolbar() {
+        mAppBarLayout = (AppBarLayout) getView().findViewById(R.id.app_bar_layout);
         mToolbar = (Toolbar) getView().findViewById(R.id.toolbar);
         mActivityInterface.setToolbar(mToolbar);
         mActivityInterface.setSupportActionBar(mToolbar);
