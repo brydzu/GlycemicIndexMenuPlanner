@@ -1,13 +1,14 @@
 package com.naelteam.glycemicindexmenuplanner.model;
 
 /**
- * Created by fg on 29/07/15.
  */
 public class Ingredient {
 
     private String name;
     private String amount;
     private Unit unit;
+    private String productId;
+    private String notes;
 
     public String getName() {
         return name;
@@ -16,10 +17,6 @@ public class Ingredient {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String productId;
-    private String notes;
-
 
     public String getAmount() {
         return amount;

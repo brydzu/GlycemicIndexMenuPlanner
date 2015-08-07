@@ -9,7 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,33 +16,37 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
-import com.naelteam.glycemicindexmenuplanner.presenter.DetailsGIPresenter;
 import com.naelteam.glycemicindexmenuplanner.utils.UnitUtils;
 
 
-public class EditMenuFragment extends BaseFragment{
+public class EditRecipeFragment extends BaseFragment implements TextWatcher{
 
-    private static final String TAG = EditMenuFragment.class.getSimpleName();
+    private static final String TAG = EditRecipeFragment.class.getSimpleName();
 
-    public static final String GLYCEMIC_INDEX = "GLYCEMIC_INDEX";
+    public static final String RECIPE_KEY = "RECIPE_KEY";
 
     private ProgressDialog mProgressdialog;
-    private DetailsGIPresenter mDetailsGIPresenter;
     private boolean initUI;
     private Interpolator mFastOutSlowInInterpolator;
 
-    public EditMenuFragment() {
+    EditText editMenuServingsText;
+    EditText editMenuPrepTimeText;
+    EditText editMenuCookingTimeText;
+    TextView editMenuIngredientsText;
+    EditText editMenuNotesText;
+    EditText editMenuReferenceText;
+    EditText editMenuVideoLinkText;
+
+    public EditRecipeFragment() {
         mDisplayFloatingButton = false;
     }
 
     public static Fragment newInstance() {
-        EditMenuFragment fragment = new EditMenuFragment();
-        /*Bundle bundle = new Bundle();
-        bundle.putParcelable(GLYCEMIC_INDEX, glycemicIndex);
-        fragment.setArguments(bundle);*/
+        EditRecipeFragment fragment = new EditRecipeFragment();
         return fragment;
     }
 
@@ -53,25 +56,15 @@ public class EditMenuFragment extends BaseFragment{
 
         Log.d(TAG, "onCreate - savedInstanceState = " + savedInstanceState);
 
-        //mDetailsGIPresenter = new DetailsGIPresenter(this);
-
         if (savedInstanceState !=null){
-            //mDetailsGIPresenter.setDataList(savedInstanceState.getParcelable(DATA_LIST_KEY));
-        }
 
-        /*Bundle arguments = getArguments();
-        if (arguments!=null){
-            Product product = arguments.getParcelable(GLYCEMIC_INDEX);
-            if (product != null){
-                mProduct = product;
-            }
-        }*/
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_recipe, container, false);
         return view;
     }
 
@@ -85,9 +78,9 @@ public class EditMenuFragment extends BaseFragment{
 
         setAppBarLayoutHeight((int) UnitUtils.dpToPixels(getActivity(), 120));
 
-        setCollapsingToolbarLayoutTitle(getString(R.string.edit_menu_title));
+        /*setCollapsingToolbarLayoutTitle(getString(R.string.edit_menu_title));
         mCollapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
-        mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));
+        mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));*/
 
         getView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -100,23 +93,25 @@ public class EditMenuFragment extends BaseFragment{
     }
 
     private void initViews() {
-        EditText editText = (EditText) getView().findViewById(R.id.edit_menu_servings);
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        editMenuServingsText = (EditText) getView().findViewById(R.id.edit_menu_servings);
+        editMenuServingsText.addTextChangedListener(this);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d(TAG, "onKey - ");
-                if (s != null && s.length()>0) {
-                    showCheckFloatingActionBar();
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        editMenuPrepTimeText = (EditText) getView().findViewById(R.id.edit_menu_prep_time);
+        editMenuPrepTimeText.addTextChangedListener(this);
+
+        editMenuCookingTimeText = (EditText) getView().findViewById(R.id.edit_menu_cooking_time);
+        editMenuCookingTimeText.addTextChangedListener(this);
+
+        editMenuIngredientsText = (TextView) getView().findViewById(R.id.edit_menu_ingredients);
+
+        editMenuNotesText = (EditText) getView().findViewById(R.id.edit_menu_notes);
+        editMenuNotesText.addTextChangedListener(this);
+
+        editMenuReferenceText = (EditText) getView().findViewById(R.id.edit_menu_references);
+        editMenuReferenceText.addTextChangedListener(this);
+
+        editMenuVideoLinkText = (EditText) getView().findViewById(R.id.edit_menu_video_link);
+        editMenuVideoLinkText.addTextChangedListener(this);
     }
 
     private void addFloatingActionButtons(final ViewGroup container) {
@@ -135,7 +130,7 @@ public class EditMenuFragment extends BaseFragment{
 
     private void addCaptureFloatingActionBar(final ViewGroup container, int fabSize, int fabPadding) {
         final FrameLayout.LayoutParams captureFabLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.END | Gravity.TOP);
-        captureFabLayoutParams.setMargins(mCollapsingToolbarLayout.getRight() - (2*fabSize) - 30, mCollapsingToolbarLayout.getBottom() - (fabSize/2), 0, fabPadding);
+        captureFabLayoutParams.setMargins(mAppBarLayout.getRight() - (2 * fabSize) - 30, mAppBarLayout.getBottom() - (fabSize / 2), 0, fabPadding);
 
         final FloatingActionButton captureFab = new FloatingActionButton(getActivity());
         captureFab.setId(R.id.capture_fab);
@@ -157,15 +152,17 @@ public class EditMenuFragment extends BaseFragment{
 
     private void showCheckFloatingActionBar(){
         final FloatingActionButton checkFab = (FloatingActionButton) getView().findViewById(R.id.check_fab);
-        checkFab.setVisibility(View.VISIBLE);
-        checkFab.animate().scaleX(1f).scaleY(1f)
-                .setInterpolator(mFastOutSlowInInterpolator);
+        if (checkFab.getVisibility()!= View.VISIBLE){
+            checkFab.setVisibility(View.VISIBLE);
+            checkFab.animate().scaleX(1f).scaleY(1f)
+                    .setInterpolator(mFastOutSlowInInterpolator);
+        }
     }
 
     private void addCheckFloatingActionButton(final ViewGroup container, int fabSize, int fabPadding) {
 
         final FrameLayout.LayoutParams checkFabLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.END | Gravity.TOP);
-        checkFabLayoutParams.setMargins(mCollapsingToolbarLayout.getRight() - fabSize - 15, mCollapsingToolbarLayout.getBottom() - (fabSize/2), 0, fabPadding);
+        checkFabLayoutParams.setMargins(mAppBarLayout.getRight() - fabSize - 15, mAppBarLayout.getBottom() - (fabSize/2), 0, fabPadding);
 
         final FloatingActionButton checkFab = new FloatingActionButton(getActivity());
         checkFab.setId(R.id.check_fab);
@@ -185,6 +182,19 @@ public class EditMenuFragment extends BaseFragment{
             }
         });
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        Log.d(TAG, "onTextChanged - s = " + s);
+        if (s != null && s.length() > 0) {
+            showCheckFloatingActionBar();
+        }
+    }
+    @Override
+    public void afterTextChanged(Editable s) {}
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

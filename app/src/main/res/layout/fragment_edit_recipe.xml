@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/app_bar_layout"/>
+    <include layout="@layout/app_bar_layout_no_scroll"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                     android:layout_alignParentRight="true"
                     android:contentDescription="@string/app_name"
                     android:scaleType="center">
-                    <EditText
+                    <TextView
                         android:id="@+id/edit_menu_ingredients"
                         android:layout_width="match_parent"
                         android:hint="@string/edit_menu_ingredients"
@@ -174,7 +174,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="30dp">
                 <ImageView
                     android:id="@+id/edit_menu_video_link_image"
                     android:layout_width="wrap_content"

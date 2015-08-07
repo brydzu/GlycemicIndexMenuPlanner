@@ -24,4 +24,7 @@
     <string name="edit_menu_references">References</string>
     <string name="edit_menu_video_link">Video link</string>
     <string name="edit_menu_title">My new menu</string>
+    <string name="add_ingredient_name">Name</string>
+    <string name="add_ingredient_amount">Amount</string>
+    <string name="add_ingredient_notes">Notes</string>
 </resources>

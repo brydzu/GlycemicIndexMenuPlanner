@@ -57,14 +57,17 @@ public abstract class BaseFragment extends Fragment{
     private void initCollapsingToolbar(){
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) getView().findViewById(R.id.collapsing_toolbar);
 
-        mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(android.R.style.TextAppearance_Medium);
-        mCollapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.black));
+        if (mCollapsingToolbarLayout != null) {
 
-        mCollapsingToolbarLayout.setExpandedTitleTextAppearance(android.R.style.TextAppearance_Large);
-        mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.black));
+            mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(android.R.style.TextAppearance_Medium);
+            mCollapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.black));
 
-        mImageToolbar = (ImageView) getView().findViewById(R.id.toolbar_image);
-        setCollapsingToolbarLayoutTitle(getResources().getString(R.string.app_name));
+            mCollapsingToolbarLayout.setExpandedTitleTextAppearance(android.R.style.TextAppearance_Large);
+            mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.black));
+
+            mImageToolbar = (ImageView) getView().findViewById(R.id.toolbar_image);
+            setCollapsingToolbarLayoutTitle(getResources().getString(R.string.app_name));
+        }
     }
 
     private void initFloatingActionBar() {
