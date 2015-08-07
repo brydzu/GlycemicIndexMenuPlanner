@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
+import com.naelteam.glycemicindexmenuplanner.dialog.AddIngredientDialog;
 import com.naelteam.glycemicindexmenuplanner.utils.UnitUtils;
 
 
@@ -103,6 +105,14 @@ public class EditRecipeFragment extends BaseFragment implements TextWatcher{
         editMenuCookingTimeText.addTextChangedListener(this);
 
         editMenuIngredientsText = (TextView) getView().findViewById(R.id.edit_menu_ingredients);
+        editMenuIngredientsText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                AddIngredientDialog dialog = new AddIngredientDialog();
+                dialog.show(getFragmentManager(), "ADD_DIALOG_FRAGMENT");
+                return false;
+            }
+        });
 
         editMenuNotesText = (EditText) getView().findViewById(R.id.edit_menu_notes);
         editMenuNotesText.addTextChangedListener(this);

@@ -1,6 +1,5 @@
 package com.naelteam.glycemicindexmenuplanner.dialog;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import com.naelteam.glycemicindexmenuplanner.R;
 /**
  * Created by fg on 07/08/15.
  */
-public class AddIngredientDialog extends DialogFragment {
+public class AddIngredientDialog extends android.support.v4.app.DialogFragment {
 
     private final static String TAG = AddIngredientDialog.class.getSimpleName();
 
