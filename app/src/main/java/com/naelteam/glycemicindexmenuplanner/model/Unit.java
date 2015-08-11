@@ -13,4 +13,13 @@ public enum Unit {
         this.code = code;
     }
 
+    public static Unit fromValue(String val){
+        for (Unit unit:Unit.values()){
+            if (unit.toString().equals(val)){
+                return unit;
+            }
+        }
+        return null;
+    }
+
 }

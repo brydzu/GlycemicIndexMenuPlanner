@@ -201,7 +201,13 @@ public class ListGIFragment extends BaseFragment implements ListGIPresenter.List
     public void onListGISuccess() {
         closeProgressDialog();
         Log.d(TAG, "onListGISuccess");
-        mRecyclerView.setVisibility(View.VISIBLE);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override

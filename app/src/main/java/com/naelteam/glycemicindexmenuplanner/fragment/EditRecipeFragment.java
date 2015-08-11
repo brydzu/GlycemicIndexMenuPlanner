@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import com.naelteam.glycemicindexmenuplanner.AppCompatActivityInterface;
 import com.naelteam.glycemicindexmenuplanner.R;
 import com.naelteam.glycemicindexmenuplanner.dialog.AddIngredientDialog;
+import com.naelteam.glycemicindexmenuplanner.model.Ingredient;
+import com.naelteam.glycemicindexmenuplanner.model.Recipe;
 import com.naelteam.glycemicindexmenuplanner.utils.UnitUtils;
 
 
@@ -42,6 +45,10 @@ public class EditRecipeFragment extends BaseFragment implements TextWatcher{
     EditText editMenuNotesText;
     EditText editMenuReferenceText;
     EditText editMenuVideoLinkText;
+
+    AddIngredientDialog addIngredientDialog;
+
+    private Recipe recipe;
 
     public EditRecipeFragment() {
         mDisplayFloatingButton = false;
@@ -105,12 +112,19 @@ public class EditRecipeFragment extends BaseFragment implements TextWatcher{
         editMenuCookingTimeText.addTextChangedListener(this);
 
         editMenuIngredientsText = (TextView) getView().findViewById(R.id.edit_menu_ingredients);
-        editMenuIngredientsText.setOnTouchListener(new View.OnTouchListener() {
+        /*editMenuIngredientsText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                AddIngredientDialog dialog = new AddIngredientDialog();
-                dialog.show(getFragmentManager(), "ADD_DIALOG_FRAGMENT");
-                return false;
+                displayAddDialogFragment();
+                return true;
+            }
+        });*/
+
+        TextInputLayout editMenuIngredientsTextLayout = (TextInputLayout) getView().findViewById(R.id.edit_menu_ingredients_layout);
+        editMenuIngredientsTextLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayAddDialogFragment();
             }
         });
 
@@ -122,6 +136,32 @@ public class EditRecipeFragment extends BaseFragment implements TextWatcher{
 
         editMenuVideoLinkText = (EditText) getView().findViewById(R.id.edit_menu_video_link);
         editMenuVideoLinkText.addTextChangedListener(this);
+    }
+
+    private void displayAddDialogFragment(){
+        if (addIngredientDialog == null) {
+            Log.d(TAG, "displayAddDialogFragment - ");
+            addIngredientDialog = AddIngredientDialog.newInstance(null);
+            addIngredientDialog.setListener(new AddIngredientDialog.Listener() {
+                @Override
+                public void onOk(Ingredient ingredient) {
+                    if (recipe == null) {
+                        recipe = new Recipe();
+                    }
+                    recipe.addIngredient(ingredient);
+
+                    editMenuIngredientsText.setText(Html.fromHtml(editMenuIngredientsText.getText() + "<br><br>" + ingredient.htmlText()));
+
+                    addIngredientDialog = null;
+                }
+
+                @Override
+                public void onCancel() {
+                    addIngredientDialog = null;
+                }
+            });
+            addIngredientDialog.show(getActivity().getSupportFragmentManager(), "ADD_DIALOG_FRAGMENT");
+        }
     }
 
     private void addFloatingActionButtons(final ViewGroup container) {
