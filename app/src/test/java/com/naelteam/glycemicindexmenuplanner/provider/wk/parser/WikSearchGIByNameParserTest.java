@@ -1,6 +1,6 @@
 package com.naelteam.glycemicindexmenuplanner.provider.wk.parser;
 
-import com.naelteam.glycemicindexmenuplanner.BuildConfig;
+import com.naelteam.glycemicindexmenuplanner.BaseTest;
 import com.naelteam.glycemicindexmenuplanner.FileUtils;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
 import com.naelteam.glycemicindexmenuplanner.provider.wik.parser.WikSearchGIByNameParser;
@@ -8,21 +8,14 @@ import com.naelteam.glycemicindexmenuplanner.provider.wik.parser.WikSearchGIByNa
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21, manifest = "/src/main/AndroidManifest.xml")
-public class WikSearchGIByNameParserTest {
+public class WikSearchGIByNameParserTest extends BaseTest {
 
-    private MainActivity mActivity;
     private WikSearchGIByNameParser sut;
 
     public WikSearchGIByNameParserTest() {
@@ -30,8 +23,7 @@ public class WikSearchGIByNameParserTest {
 
     @Before
     public void setup()  {
-        mActivity = Robolectric.buildActivity(MainActivity.class)
-                .create().get();
+        super.setup();
         sut = new WikSearchGIByNameParser();
     }
 

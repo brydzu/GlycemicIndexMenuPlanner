@@ -7,13 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by fab on 02/06/15.
  */
 public class Product implements Parcelable, IGlycemicIndex{
 
     private String id;
-
     private String revId;
+
+    private String title;
+    private String description;
+    private String value;
+    private boolean selected;
+    private String thumbnailUrl;
+    private List<Section> sections;
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
         @Override
@@ -26,13 +31,6 @@ public class Product implements Parcelable, IGlycemicIndex{
             return new Product[size];
         }
     };
-    private String title;
-    private String description;
-    private String value;
-    private boolean selected;
-
-    private String thumbnailUrl;
-    private List<Section> sections;
 
     public Product(){
 
@@ -47,7 +45,13 @@ public class Product implements Parcelable, IGlycemicIndex{
     protected Product(Parcel in) {
         title = in.readString();
         description = in.readString();
+        thumbnailUrl = in.readString();
         value = in.readString();
+        boolean[] array = new boolean[1];
+        in.readBooleanArray(array);
+        selected=array[0];
+        sections=new ArrayList<>();
+        in.readTypedList(sections, Section.CREATOR);
     }
 
     public String getRevId() {
@@ -130,7 +134,10 @@ public class Product implements Parcelable, IGlycemicIndex{
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(title);
         parcel.writeString(description);
+        parcel.writeString(thumbnailUrl);
         parcel.writeString(value);
+        parcel.writeBooleanArray(new boolean[]{selected});
+        parcel.writeTypedList(sections);
     }
 
     @Override

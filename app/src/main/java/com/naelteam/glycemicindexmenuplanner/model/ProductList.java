@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by fab on 18/06/15.
  */
 public class ProductList implements Parcelable {
+
+    private List<Product> mProducts;
 
     public static final Creator<ProductList> CREATOR = new Creator<ProductList>() {
         @Override
@@ -22,7 +23,6 @@ public class ProductList implements Parcelable {
             return new ProductList[size];
         }
     };
-    private List<Product> mProducts;
 
     public ProductList(){
         mProducts = new ArrayList<Product>();
@@ -34,7 +34,8 @@ public class ProductList implements Parcelable {
     }
 
     protected ProductList(Parcel in) {
-        mProducts = in.createTypedArrayList(Product.CREATOR);
+        mProducts = new ArrayList<>();
+        in.readTypedList(mProducts, Product.CREATOR);
     }
 
     public void add(Product product){

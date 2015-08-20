@@ -2,6 +2,7 @@ package com.naelteam.glycemicindexmenuplanner.network;
 
 import android.os.CountDownTimer;
 
+import com.naelteam.glycemicindexmenuplanner.BaseTest;
 import com.naelteam.glycemicindexmenuplanner.BuildConfig;
 import com.naelteam.glycemicindexmenuplanner.FileUtils;
 import com.naelteam.glycemicindexmenuplanner.MainActivity;
@@ -25,13 +26,9 @@ import rx.Observer;
 import rx.schedulers.Schedulers;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21, manifest = "/src/main/AndroidManifest.xml")
-public class WikSearchGIByNameServiceTest {
+public class WikSearchGIByNameServiceTest extends BaseTest {
 
-    private MainActivity mActivity;
     private WikSearchGIByNameService sut;
 
     public WikSearchGIByNameServiceTest() {
@@ -39,8 +36,6 @@ public class WikSearchGIByNameServiceTest {
 
     @Before
     public void setup()  {
-        mActivity = Robolectric.buildActivity(MainActivity.class)
-                .create().get();
         sut = new WikSearchGIByNameService(WikProvider.getBaseUrl(Locale.FRANCE));
     }
 
