@@ -1,6 +1,7 @@
 package com.naelteam.glycemicindexmenuplanner.model;
 
-import android.widget.MultiAutoCompleteTextView;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.StringTokenizer;
 /**
  * Created by fab on 12/07/15.
  */
-public class Section {
+public class Section implements Parcelable{
 
     private String mTitle;
     private List<Section> mSections;
@@ -17,8 +18,25 @@ public class Section {
     private String[] mImagesUrl;
     private boolean subTitle;
 
+    public static final Creator<Section> CREATOR = new Creator<Section>() {
+        @Override
+        public Section createFromParcel(Parcel in) {
+            return new Section(in);
+        }
+
+        @Override
+        public Section[] newArray(int size) {
+            return new Section[size];
+        }
+    };
+
     public Section(String title){
-        this.mTitle = title;
+        mTitle = title;
+    }
+
+    public Section(String title, String description){
+        mTitle = title;
+        mDescription = description;
     }
 
     public Section() {
@@ -65,6 +83,36 @@ public class Section {
 
     public void setSubTitle(boolean subTitle) {
         this.subTitle = subTitle;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    protected Section(Parcel in) {
+        mTitle = in.readString();
+        mDescription= in.readString();
+        int imagesSize = in.readInt();
+        if (imagesSize > 0) {
+            mImagesUrl = new String[imagesSize];
+            in.readStringArray(mImagesUrl);
+        }
+        boolean[] array = new boolean[1];
+        in.readBooleanArray(array);
+        subTitle = array[0];
+        mSections = new ArrayList<>();
+        in.readTypedList(mSections, Section.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mTitle);
+        parcel.writeString(mDescription);
+        parcel.writeInt((mImagesUrl!=null)?mImagesUrl.length:0);
+        parcel.writeStringArray(mImagesUrl);
+        parcel.writeBooleanArray(new boolean[]{subTitle});
+        parcel.writeTypedList(mSections);
     }
 
     @Override
